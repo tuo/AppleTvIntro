@@ -42,12 +42,19 @@
 - (void) renderGrid
 {
 
-    CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
-                                        rotationAndPerspectiveTransform.m34 = 1.0 / -500;
+//    CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
+//                                        rotationAndPerspectiveTransform.m34 = 1.0 / -500;
+
+    CATransform3D rotationAndPerspectiveTransform = CATransform3DMakeRotation(0, 0.2, 1, 0);
+    //rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, 0.2, 1, 0, 0);
+    float zDistance = 500;
+    rotationAndPerspectiveTransform.m34 = 1.0 / -zDistance;
+
 
     [[self.view subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
 
     self.view.layer.sublayerTransform = rotationAndPerspectiveTransform;
+    //self.view.backgroundColor = [UIColor whiteColor];
 
     int i = 0;
     float posX = MARGIN;
@@ -81,17 +88,28 @@
         CGPoint bottomRight = CGPointMake(CGRectGetWidth(layerBounds), CGRectGetHeight(layerBounds));
         CGPoint topRight = CGPointMake(CGRectGetWidth(layerBounds), 0);
         int offset = 4.0;
-        if (i == 1 || i == 2)
+        if (i % COLS == 1 || i % COLS == 2)
          offset = 2;
 
-        CGPoint topMiddle = CGPointMake(CGRectGetWidth(layerBounds)/2, offset);
-        CGPoint bottomMiddle = CGPointMake(CGRectGetWidth(layerBounds)/2, CGRectGetHeight(layerBounds) - offset);
+        CGPoint topMiddle = CGPointMake(CGRectGetWidth(layerBounds)/2  , offset);
+                        CGPoint bottomMiddle = CGPointMake(CGRectGetWidth(layerBounds)/2  , CGRectGetHeight(layerBounds) - offset);
+
+
+//        CGPoint topMiddle = CGPointMake(CGRectGetWidth(layerBounds)/2 + CGRectGetWidth(layerBounds)/4, offset);
+//                CGPoint bottomMiddle = CGPointMake(CGRectGetWidth(layerBounds)/2 + CGRectGetWidth(layerBounds)/4, CGRectGetHeight(layerBounds) - offset);
+//
+//        if(i == 2 || i == 3){
+//             topMiddle = CGPointMake(CGRectGetWidth(layerBounds)/2 - CGRectGetWidth(layerBounds)/4, offset);
+//             bottomMiddle = CGPointMake(CGRectGetWidth(layerBounds)/2 - CGRectGetWidth(layerBounds)/4, CGRectGetHeight(layerBounds) - offset);
+//
+//        }
 
 
         [path moveToPoint:topLeft];
         [path addQuadCurveToPoint:topRight controlPoint:topMiddle];
         [path addLineToPoint:bottomRight];
-        [path addQuadCurveToPoint:bottomLeft controlPoint:bottomMiddle];
+        [path addLineToPoint:bottomLeft];
+        //[path addQuadCurveToPoint:bottomLeft controlPoint:bottomMiddle];
         [path addLineToPoint:topLeft];
         [path closePath];
 
@@ -116,10 +134,17 @@
         layer.borderColor = topColor.CGColor;
         //layer.borderWidth = 2;
 
+//         if (i == 4){
+//             posZ = CGRectGetWidth(rect) * sinf(4.0f * M_PI / 180.0f);
+//                         NSLog(@"PSOZ sin : %f,  cos: %f", posZ, CGRectGetWidth(rect) * cosf(5.0f * M_PI / 180.0f));
+//
+//                           CATransform3D transform3D = CATransform3DRotate(rotationAndPerspectiveTransform, -4.0f * M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
+//                         layer.transform = transform3D;
+//
+//         }
 
 
-
-        if(i == 0){
+        if(i % COLS == 0){
             posZ = CGRectGetWidth(rect) * sinf(5.0f * M_PI / 180.0f);
             NSLog(@"PSOZ sin : %f,  cos: %f", posZ, CGRectGetWidth(rect) * cosf(5.0f * M_PI / 180.0f));
 
@@ -132,7 +157,7 @@
             //    self.topHalfLayer.transform = CATransform3DRotate(transform, topAngle, 1.0, 0.0, 0.0);
             //    self.bottomHalfLayer.transform = CATransform3DRotate(transform, bottomAngle, 1.0, 0.0, 0.0);
         }
-        if (i == 1){
+        if (i % COLS == 1){
             int posx = CGRectGetWidth(rect) * (1 - cosf(5.0f * M_PI / 180.0f));
             CATransform3D transform3D= CATransform3DTranslate(rotationAndPerspectiveTransform, -(MARGIN - 4) , 0.0, -posZ);
             transform3D = CATransform3DRotate(transform3D, 2.0f * M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
@@ -141,7 +166,7 @@
             layer.transform = transform3D;
 
         }
-        if (i==2){
+        if (i % COLS==2){
             int posx = CGRectGetWidth(rect) * (1 - cosf(5.0f * M_PI / 180.0f));
             CATransform3D transform3D= CATransform3DTranslate(rotationAndPerspectiveTransform, -(MARGIN + 18) , 0.0, -posZ);
             transform3D = CATransform3DRotate(transform3D, -2.0f * M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
@@ -149,7 +174,7 @@
             posZ -= CGRectGetWidth(rect) * sinf(2.0f * M_PI / 180.0f);
 
         }
-        if(i == 3){
+        if(i % COLS== 3){
 
 
                         int posx = CGRectGetWidth(rect) * (1 - cosf(5.0f * M_PI / 180.0f));

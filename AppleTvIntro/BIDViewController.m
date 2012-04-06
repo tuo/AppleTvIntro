@@ -42,15 +42,18 @@
 - (void) renderGrid
 {
 
+    CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
+                                        rotationAndPerspectiveTransform.m34 = 1.0 / -500;
+
     [[self.view subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
 
-    CATransform3D transform = CATransform3DIdentity;
-    transform.m34 = -1/1000.0;
-    self.view.layer.sublayerTransform = transform;
+    self.view.layer.sublayerTransform = rotationAndPerspectiveTransform;
 
     int i = 0;
     float posX = MARGIN;
     float posY = MARGIN;
+
+    float posZ ;
     for (;i < 12;)
     {
         UIImage *img = [UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg", i]];
@@ -58,6 +61,8 @@
         CGRect rect = CGRectMake(posX, posY, COVER_W, COVER_H);
 
         layer.frame = rect;
+        layer.anchorPoint = CGPointMake(0, 0.0);
+        layer.position = CGPointMake(posX, posY);
         layer.contents = (__bridge id)img.CGImage;
 //        /layer.path = CGPathCreateWithEllipseInRect(rect, nil);
 
@@ -75,8 +80,10 @@
         CGPoint bottomLeft = CGPointMake(0.0, CGRectGetHeight(layerBounds));
         CGPoint bottomRight = CGPointMake(CGRectGetWidth(layerBounds), CGRectGetHeight(layerBounds));
         CGPoint topRight = CGPointMake(CGRectGetWidth(layerBounds), 0);
+        int offset = 4.0;
+        if (i == 1 || i == 2)
+         offset = 2;
 
-        int offset = 10.0;
         CGPoint topMiddle = CGPointMake(CGRectGetWidth(layerBounds)/2, offset);
         CGPoint bottomMiddle = CGPointMake(CGRectGetWidth(layerBounds)/2, CGRectGetHeight(layerBounds) - offset);
 
@@ -96,6 +103,65 @@
 
         layer.fillColor = fillColor.CGColor;
         [self.view.layer addSublayer:layer];
+
+
+           CGFloat h,s,b,a;
+
+
+            [[UIColor redColor] getHue:&h saturation:&s brightness:&b alpha:&a];
+            CGFloat tb = b * ( 1 - i * 0.1 ); // scale from 100% - 65% brightness
+
+            UIColor *topColor = [UIColor colorWithHue:h saturation:s brightness:tb alpha:a];
+
+        layer.borderColor = topColor.CGColor;
+        //layer.borderWidth = 2;
+
+
+
+
+        if(i == 0){
+            posZ = CGRectGetWidth(rect) * sinf(5.0f * M_PI / 180.0f);
+            NSLog(@"PSOZ sin : %f,  cos: %f", posZ, CGRectGetWidth(rect) * cosf(5.0f * M_PI / 180.0f));
+
+              CATransform3D transform3D = CATransform3DRotate(rotationAndPerspectiveTransform, 5.0f * M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
+            layer.transform = transform3D;
+
+//             CATransform3D transform = CATransform3DMakeRotation(15 * M_PI /180, 0, -1.0, 0);
+//            layer.transform = transform;
+            //CATransform3D transform = CATransform3DMakeTranslation(0.0, 0.0, -z);
+            //    self.topHalfLayer.transform = CATransform3DRotate(transform, topAngle, 1.0, 0.0, 0.0);
+            //    self.bottomHalfLayer.transform = CATransform3DRotate(transform, bottomAngle, 1.0, 0.0, 0.0);
+        }
+        if (i == 1){
+            int posx = CGRectGetWidth(rect) * (1 - cosf(5.0f * M_PI / 180.0f));
+            CATransform3D transform3D= CATransform3DTranslate(rotationAndPerspectiveTransform, -(MARGIN - 4) , 0.0, -posZ);
+            transform3D = CATransform3DRotate(transform3D, 2.0f * M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
+            posZ += CGRectGetWidth(rect) * sinf(2.0f * M_PI / 180.0f);
+//            /layer.mask = nil;
+            layer.transform = transform3D;
+
+        }
+        if (i==2){
+            int posx = CGRectGetWidth(rect) * (1 - cosf(5.0f * M_PI / 180.0f));
+            CATransform3D transform3D= CATransform3DTranslate(rotationAndPerspectiveTransform, -(MARGIN + 18) , 0.0, -posZ);
+            transform3D = CATransform3DRotate(transform3D, -2.0f * M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
+            layer.transform = transform3D;
+            posZ -= CGRectGetWidth(rect) * sinf(2.0f * M_PI / 180.0f);
+
+        }
+        if(i == 3){
+
+
+                        int posx = CGRectGetWidth(rect) * (1 - cosf(5.0f * M_PI / 180.0f));
+
+            CATransform3D transform3D= CATransform3DTranslate(rotationAndPerspectiveTransform, -(2 * MARGIN + 10 ) , 0.0, -posZ);
+            transform3D = CATransform3DRotate(transform3D, -5.0f * M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
+                        layer.transform = transform3D;
+
+
+
+        }
+
 
 
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A95B840D152F352500F08318 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A95B840C152F352500F08318 /* QuartzCore.framework */; };
 		E91EEC608BB046CE9C3722A5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C3722A4 /* UIKit.framework */; };
 		E91EEC608BB046CE9C3722A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C3722A6 /* Foundation.framework */; };
 		E91EEC608BB046CE9C3722A9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C3722A8 /* CoreGraphics.framework */; };
@@ -49,6 +50,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A95B840C152F352500F08318 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E91EEC608BB046CE9C37229B /* AppleTvIntro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppleTvIntro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E91EEC608BB046CE9C3722A4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E91EEC608BB046CE9C3722A6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -99,6 +101,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A95B840D152F352500F08318 /* QuartzCore.framework in Frameworks */,
 				E91EEC608BB046CE9C3722A5 /* UIKit.framework in Frameworks */,
 				E91EEC608BB046CE9C3722A7 /* Foundation.framework in Frameworks */,
 				E91EEC608BB046CE9C3722A9 /* CoreGraphics.framework in Frameworks */,
@@ -111,6 +114,7 @@
 		E91EEC608BB046CE9C372297 = {
 			isa = PBXGroup;
 			children = (
+				A95B840C152F352500F08318 /* QuartzCore.framework */,
 				E91EEC608BB046CE9C372298 /* Products */,
 				E91EEC608BB046CE9C3722A3 /* Frameworks */,
 				E91EEC608BB046CE9C3722AA /* AppleTvIntro */,

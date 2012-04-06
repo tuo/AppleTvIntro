@@ -1,0 +1,416 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E91EEC608BB046CE9C3722A5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C3722A4 /* UIKit.framework */; };
+		E91EEC608BB046CE9C3722A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C3722A6 /* Foundation.framework */; };
+		E91EEC608BB046CE9C3722A9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C3722A8 /* CoreGraphics.framework */; };
+		E91EEC608BB046CE9C3722AF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C3722AE /* InfoPlist.strings */; };
+		E91EEC608BB046CE9C3722B1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C3722B0 /* main.m */; };
+		E91EEC608BB046CE9C3722B5 /* BIDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C3722B4 /* BIDAppDelegate.m */; };
+		E91EEC608BB046CE9C3722B8 /* BIDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C3722B7 /* BIDViewController.m */; };
+		E91EEC608BB046CE9C3722BB /* BIDViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C3722BA /* BIDViewController.xib */; };
+		E91EEC608BB046CE9C3722BD /* (null) in Resources */ = {isa = PBXBuildFile; };
+		E91EEC608BB046CE9C372302 /* 0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372301 /* 0.jpg */; };
+		E91EEC608BB046CE9C372304 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372303 /* 1.jpg */; };
+		E91EEC608BB046CE9C372306 /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372305 /* 2.jpg */; };
+		E91EEC608BB046CE9C372308 /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372307 /* 3.jpg */; };
+		E91EEC608BB046CE9C37230A /* 4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372309 /* 4.jpg */; };
+		E91EEC608BB046CE9C37230C /* 5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C37230B /* 5.jpg */; };
+		E91EEC608BB046CE9C37230E /* 6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C37230D /* 6.jpg */; };
+		E91EEC608BB046CE9C372310 /* 7.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C37230F /* 7.jpg */; };
+		E91EEC608BB046CE9C372312 /* 8.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372311 /* 8.jpg */; };
+		E91EEC608BB046CE9C372314 /* 9.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372313 /* 9.jpg */; };
+		E91EEC608BB046CE9C372316 /* 10.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372315 /* 10.jpg */; };
+		E91EEC608BB046CE9C372318 /* 11.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372317 /* 11.jpg */; };
+		E91EEC608BB046CE9C37231A /* 12.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372319 /* 12.jpg */; };
+		E91EEC608BB046CE9C37231C /* 13.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C37231B /* 13.jpg */; };
+		E91EEC608BB046CE9C37231E /* 14.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C37231D /* 14.jpg */; };
+		E91EEC608BB046CE9C372320 /* 15.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C37231F /* 15.jpg */; };
+		E91EEC608BB046CE9C372322 /* 16.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372321 /* 16.jpg */; };
+		E91EEC608BB046CE9C372324 /* 17.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372323 /* 17.jpg */; };
+		E91EEC608BB046CE9C372326 /* 18.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372325 /* 18.jpg */; };
+		E91EEC608BB046CE9C372328 /* 19.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372327 /* 19.jpg */; };
+		E91EEC608BB046CE9C37232A /* 20.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372329 /* 20.jpg */; };
+		E91EEC608BB046CE9C37232C /* 21.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C37232B /* 21.jpg */; };
+		E91EEC608BB046CE9C37232E /* 22.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C37232D /* 22.jpg */; };
+		E91EEC608BB046CE9C372330 /* 23.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C37232F /* 23.jpg */; };
+		E91EEC608BB046CE9C372332 /* 24.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372331 /* 24.jpg */; };
+		E91EEC608BB046CE9C372334 /* 25.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372333 /* 25.jpg */; };
+		E91EEC608BB046CE9C372336 /* 26.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372335 /* 26.jpg */; };
+		E91EEC608BB046CE9C372338 /* 27.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372337 /* 27.jpg */; };
+		E91EEC608BB046CE9C37233A /* 28.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372339 /* 28.jpg */; };
+		E91EEC608BB046CE9C37233C /* 29.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C37233B /* 29.jpg */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		E91EEC608BB046CE9C37229B /* AppleTvIntro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppleTvIntro.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E91EEC608BB046CE9C3722A4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		E91EEC608BB046CE9C3722A6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E91EEC608BB046CE9C3722A8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		E91EEC608BB046CE9C3722AC /* AppleTvIntro-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.info; path = "AppleTvIntro-Info.plist"; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C3722AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C3722B0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C3722B2 /* AppleTvIntro-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppleTvIntro-Prefix.pch"; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C3722B3 /* BIDAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BIDAppDelegate.h; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C3722B4 /* BIDAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BIDAppDelegate.m; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C3722B6 /* BIDViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BIDViewController.h; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C3722B7 /* BIDViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BIDViewController.m; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C3722B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/BIDViewController.xib; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372301 /* 0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 0.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372303 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372305 /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372307 /* 3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372309 /* 4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 4.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C37230B /* 5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 5.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C37230D /* 6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 6.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C37230F /* 7.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 7.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372311 /* 8.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 8.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372313 /* 9.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 9.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372315 /* 10.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 10.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372317 /* 11.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 11.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372319 /* 12.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 12.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C37231B /* 13.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 13.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C37231D /* 14.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 14.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C37231F /* 15.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 15.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372321 /* 16.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 16.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372323 /* 17.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 17.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372325 /* 18.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 18.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372327 /* 19.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 19.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372329 /* 20.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 20.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C37232B /* 21.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 21.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C37232D /* 22.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 22.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C37232F /* 23.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 23.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372331 /* 24.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 24.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372333 /* 25.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 25.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372335 /* 26.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 26.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372337 /* 27.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 27.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C372339 /* 28.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 28.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C37233B /* 29.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 29.jpg; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E91EEC608BB046CE9C3722A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E91EEC608BB046CE9C3722A5 /* UIKit.framework in Frameworks */,
+				E91EEC608BB046CE9C3722A7 /* Foundation.framework in Frameworks */,
+				E91EEC608BB046CE9C3722A9 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E91EEC608BB046CE9C372297 = {
+			isa = PBXGroup;
+			children = (
+				E91EEC608BB046CE9C372298 /* Products */,
+				E91EEC608BB046CE9C3722A3 /* Frameworks */,
+				E91EEC608BB046CE9C3722AA /* AppleTvIntro */,
+			);
+			sourceTree = "<group>";
+		};
+		E91EEC608BB046CE9C372298 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E91EEC608BB046CE9C37229B /* AppleTvIntro.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E91EEC608BB046CE9C3722A3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E91EEC608BB046CE9C3722A8 /* CoreGraphics.framework */,
+				E91EEC608BB046CE9C3722A6 /* Foundation.framework */,
+				E91EEC608BB046CE9C3722A4 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E91EEC608BB046CE9C3722AA /* AppleTvIntro */ = {
+			isa = PBXGroup;
+			children = (
+				E91EEC608BB046CE9C3722BA /* BIDViewController.xib */,
+				E91EEC608BB046CE9C3722B7 /* BIDViewController.m */,
+				E91EEC608BB046CE9C3722B6 /* BIDViewController.h */,
+				E91EEC608BB046CE9C3722B4 /* BIDAppDelegate.m */,
+				E91EEC608BB046CE9C3722B3 /* BIDAppDelegate.h */,
+				E91EEC608BB046CE9C3722AB /* Supporting Files */,
+			);
+			path = AppleTvIntro;
+			sourceTree = "<group>";
+		};
+		E91EEC608BB046CE9C3722AB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E91EEC608BB046CE9C3722B2 /* AppleTvIntro-Prefix.pch */,
+				E91EEC608BB046CE9C3722B0 /* main.m */,
+				E91EEC608BB046CE9C3722AE /* InfoPlist.strings */,
+				E91EEC608BB046CE9C3722AC /* AppleTvIntro-Info.plist */,
+				E91EEC608BB046CE9C372300 /* images */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E91EEC608BB046CE9C372300 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				E91EEC608BB046CE9C37233B /* 29.jpg */,
+				E91EEC608BB046CE9C372339 /* 28.jpg */,
+				E91EEC608BB046CE9C372337 /* 27.jpg */,
+				E91EEC608BB046CE9C372335 /* 26.jpg */,
+				E91EEC608BB046CE9C372333 /* 25.jpg */,
+				E91EEC608BB046CE9C372331 /* 24.jpg */,
+				E91EEC608BB046CE9C37232F /* 23.jpg */,
+				E91EEC608BB046CE9C37232D /* 22.jpg */,
+				E91EEC608BB046CE9C37232B /* 21.jpg */,
+				E91EEC608BB046CE9C372329 /* 20.jpg */,
+				E91EEC608BB046CE9C372327 /* 19.jpg */,
+				E91EEC608BB046CE9C372325 /* 18.jpg */,
+				E91EEC608BB046CE9C372323 /* 17.jpg */,
+				E91EEC608BB046CE9C372321 /* 16.jpg */,
+				E91EEC608BB046CE9C37231F /* 15.jpg */,
+				E91EEC608BB046CE9C37231D /* 14.jpg */,
+				E91EEC608BB046CE9C37231B /* 13.jpg */,
+				E91EEC608BB046CE9C372319 /* 12.jpg */,
+				E91EEC608BB046CE9C372317 /* 11.jpg */,
+				E91EEC608BB046CE9C372315 /* 10.jpg */,
+				E91EEC608BB046CE9C372313 /* 9.jpg */,
+				E91EEC608BB046CE9C372311 /* 8.jpg */,
+				E91EEC608BB046CE9C37230F /* 7.jpg */,
+				E91EEC608BB046CE9C37230D /* 6.jpg */,
+				E91EEC608BB046CE9C37230B /* 5.jpg */,
+				E91EEC608BB046CE9C372309 /* 4.jpg */,
+				E91EEC608BB046CE9C372307 /* 3.jpg */,
+				E91EEC608BB046CE9C372305 /* 2.jpg */,
+				E91EEC608BB046CE9C372303 /* 1.jpg */,
+				E91EEC608BB046CE9C372301 /* 0.jpg */,
+			);
+			name = images;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E91EEC608BB046CE9C37229C /* AppleTvIntro */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E91EEC608BB046CE9C37229D /* Build configuration list for PBXNativeTarget "AppleTvIntro" */;
+			buildPhases = (
+				E91EEC608BB046CE9C3722A0 /* Sources */,
+				E91EEC608BB046CE9C3722A1 /* Frameworks */,
+				E91EEC608BB046CE9C3722A2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AppleTvIntro;
+			productName = AppleTvIntro;
+			productReference = E91EEC608BB046CE9C37229B /* AppleTvIntro.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E91EEC608BB046CE9C372295 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = E91EEC608BB046CE9C372296 /* Build configuration list for PBXProject "AppleTvIntro" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E91EEC608BB046CE9C372297;
+			productRefGroup = E91EEC608BB046CE9C372298 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E91EEC608BB046CE9C37229C /* AppleTvIntro */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E91EEC608BB046CE9C3722A2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E91EEC608BB046CE9C3722AF /* InfoPlist.strings in Resources */,
+				E91EEC608BB046CE9C3722BB /* BIDViewController.xib in Resources */,
+				E91EEC608BB046CE9C3722BD /* (null) in Resources */,
+				E91EEC608BB046CE9C372302 /* 0.jpg in Resources */,
+				E91EEC608BB046CE9C372304 /* 1.jpg in Resources */,
+				E91EEC608BB046CE9C372306 /* 2.jpg in Resources */,
+				E91EEC608BB046CE9C372308 /* 3.jpg in Resources */,
+				E91EEC608BB046CE9C37230A /* 4.jpg in Resources */,
+				E91EEC608BB046CE9C37230C /* 5.jpg in Resources */,
+				E91EEC608BB046CE9C37230E /* 6.jpg in Resources */,
+				E91EEC608BB046CE9C372310 /* 7.jpg in Resources */,
+				E91EEC608BB046CE9C372312 /* 8.jpg in Resources */,
+				E91EEC608BB046CE9C372314 /* 9.jpg in Resources */,
+				E91EEC608BB046CE9C372316 /* 10.jpg in Resources */,
+				E91EEC608BB046CE9C372318 /* 11.jpg in Resources */,
+				E91EEC608BB046CE9C37231A /* 12.jpg in Resources */,
+				E91EEC608BB046CE9C37231C /* 13.jpg in Resources */,
+				E91EEC608BB046CE9C37231E /* 14.jpg in Resources */,
+				E91EEC608BB046CE9C372320 /* 15.jpg in Resources */,
+				E91EEC608BB046CE9C372322 /* 16.jpg in Resources */,
+				E91EEC608BB046CE9C372324 /* 17.jpg in Resources */,
+				E91EEC608BB046CE9C372326 /* 18.jpg in Resources */,
+				E91EEC608BB046CE9C372328 /* 19.jpg in Resources */,
+				E91EEC608BB046CE9C37232A /* 20.jpg in Resources */,
+				E91EEC608BB046CE9C37232C /* 21.jpg in Resources */,
+				E91EEC608BB046CE9C37232E /* 22.jpg in Resources */,
+				E91EEC608BB046CE9C372330 /* 23.jpg in Resources */,
+				E91EEC608BB046CE9C372332 /* 24.jpg in Resources */,
+				E91EEC608BB046CE9C372334 /* 25.jpg in Resources */,
+				E91EEC608BB046CE9C372336 /* 26.jpg in Resources */,
+				E91EEC608BB046CE9C372338 /* 27.jpg in Resources */,
+				E91EEC608BB046CE9C37233A /* 28.jpg in Resources */,
+				E91EEC608BB046CE9C37233C /* 29.jpg in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E91EEC608BB046CE9C3722A0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E91EEC608BB046CE9C3722B1 /* main.m in Sources */,
+				E91EEC608BB046CE9C3722B5 /* BIDAppDelegate.m in Sources */,
+				E91EEC608BB046CE9C3722B8 /* BIDViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		E91EEC608BB046CE9C3722AE /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E91EEC608BB046CE9C3722AD /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		E91EEC608BB046CE9C3722BA /* BIDViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E91EEC608BB046CE9C3722B9 /* en */,
+			);
+			name = BIDViewController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E91EEC608BB046CE9C372299 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E91EEC608BB046CE9C37229A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		E91EEC608BB046CE9C37229E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AppleTvIntro/AppleTvIntro-Prefix.pch";
+				INFOPLIST_FILE = "AppleTvIntro/AppleTvIntro-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		E91EEC608BB046CE9C37229F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AppleTvIntro/AppleTvIntro-Prefix.pch";
+				INFOPLIST_FILE = "AppleTvIntro/AppleTvIntro-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E91EEC608BB046CE9C372296 /* Build configuration list for PBXProject "AppleTvIntro" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E91EEC608BB046CE9C372299 /* Release */,
+				E91EEC608BB046CE9C37229A /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E91EEC608BB046CE9C37229D /* Build configuration list for PBXNativeTarget "AppleTvIntro" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E91EEC608BB046CE9C37229E /* Release */,
+				E91EEC608BB046CE9C37229F /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E91EEC608BB046CE9C372295 /* Project object */;
+}

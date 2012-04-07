@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class BIDViewController;
+
+@class BIDRootViewController;
 
 @interface BIDAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (strong, nonatomic) BIDViewController *viewController;
+@property (strong, nonatomic) BIDRootViewController *viewController;
 
 @end

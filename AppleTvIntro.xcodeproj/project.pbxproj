@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A936B438152FEA7F000885EC /* BIDRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A936B436152FEA7F000885EC /* BIDRootViewController.m */; };
+		A936B439152FEA7F000885EC /* BIDRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A936B437152FEA7F000885EC /* BIDRootViewController.xib */; };
 		A95B840D152F352500F08318 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A95B840C152F352500F08318 /* QuartzCore.framework */; };
 		E91EEC608BB046CE9C3722A5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C3722A4 /* UIKit.framework */; };
 		E91EEC608BB046CE9C3722A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C3722A6 /* Foundation.framework */; };
@@ -14,8 +16,6 @@
 		E91EEC608BB046CE9C3722AF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C3722AE /* InfoPlist.strings */; };
 		E91EEC608BB046CE9C3722B1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C3722B0 /* main.m */; };
 		E91EEC608BB046CE9C3722B5 /* BIDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C3722B4 /* BIDAppDelegate.m */; };
-		E91EEC608BB046CE9C3722B8 /* BIDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C3722B7 /* BIDViewController.m */; };
-		E91EEC608BB046CE9C3722BB /* BIDViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C3722BA /* BIDViewController.xib */; };
 		E91EEC608BB046CE9C3722BD /* (null) in Resources */ = {isa = PBXBuildFile; };
 		E91EEC608BB046CE9C372302 /* 0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372301 /* 0.jpg */; };
 		E91EEC608BB046CE9C372304 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372303 /* 1.jpg */; };
@@ -50,6 +50,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A936B435152FEA7F000885EC /* BIDRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BIDRootViewController.h; sourceTree = "<group>"; };
+		A936B436152FEA7F000885EC /* BIDRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BIDRootViewController.m; sourceTree = "<group>"; };
+		A936B437152FEA7F000885EC /* BIDRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BIDRootViewController.xib; sourceTree = "<group>"; };
 		A95B840C152F352500F08318 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E91EEC608BB046CE9C37229B /* AppleTvIntro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppleTvIntro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E91EEC608BB046CE9C3722A4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -61,9 +64,6 @@
 		E91EEC608BB046CE9C3722B2 /* AppleTvIntro-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppleTvIntro-Prefix.pch"; sourceTree = "<group>"; };
 		E91EEC608BB046CE9C3722B3 /* BIDAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BIDAppDelegate.h; sourceTree = "<group>"; };
 		E91EEC608BB046CE9C3722B4 /* BIDAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BIDAppDelegate.m; sourceTree = "<group>"; };
-		E91EEC608BB046CE9C3722B6 /* BIDViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BIDViewController.h; sourceTree = "<group>"; };
-		E91EEC608BB046CE9C3722B7 /* BIDViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BIDViewController.m; sourceTree = "<group>"; };
-		E91EEC608BB046CE9C3722B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/BIDViewController.xib; sourceTree = "<group>"; };
 		E91EEC608BB046CE9C372301 /* 0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 0.jpg; sourceTree = "<group>"; };
 		E91EEC608BB046CE9C372303 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		E91EEC608BB046CE9C372305 /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
@@ -142,12 +142,12 @@
 		E91EEC608BB046CE9C3722AA /* AppleTvIntro */ = {
 			isa = PBXGroup;
 			children = (
-				E91EEC608BB046CE9C3722BA /* BIDViewController.xib */,
-				E91EEC608BB046CE9C3722B7 /* BIDViewController.m */,
-				E91EEC608BB046CE9C3722B6 /* BIDViewController.h */,
 				E91EEC608BB046CE9C3722B4 /* BIDAppDelegate.m */,
 				E91EEC608BB046CE9C3722B3 /* BIDAppDelegate.h */,
 				E91EEC608BB046CE9C3722AB /* Supporting Files */,
+				A936B435152FEA7F000885EC /* BIDRootViewController.h */,
+				A936B436152FEA7F000885EC /* BIDRootViewController.m */,
+				A936B437152FEA7F000885EC /* BIDRootViewController.xib */,
 			);
 			path = AppleTvIntro;
 			sourceTree = "<group>";
@@ -252,7 +252,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E91EEC608BB046CE9C3722AF /* InfoPlist.strings in Resources */,
-				E91EEC608BB046CE9C3722BB /* BIDViewController.xib in Resources */,
 				E91EEC608BB046CE9C3722BD /* (null) in Resources */,
 				E91EEC608BB046CE9C372302 /* 0.jpg in Resources */,
 				E91EEC608BB046CE9C372304 /* 1.jpg in Resources */,
@@ -284,6 +283,7 @@
 				E91EEC608BB046CE9C372338 /* 27.jpg in Resources */,
 				E91EEC608BB046CE9C37233A /* 28.jpg in Resources */,
 				E91EEC608BB046CE9C37233C /* 29.jpg in Resources */,
+				A936B439152FEA7F000885EC /* BIDRootViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,7 +296,7 @@
 			files = (
 				E91EEC608BB046CE9C3722B1 /* main.m in Sources */,
 				E91EEC608BB046CE9C3722B5 /* BIDAppDelegate.m in Sources */,
-				E91EEC608BB046CE9C3722B8 /* BIDViewController.m in Sources */,
+				A936B438152FEA7F000885EC /* BIDRootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -309,14 +309,6 @@
 				E91EEC608BB046CE9C3722AD /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		E91EEC608BB046CE9C3722BA /* BIDViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E91EEC608BB046CE9C3722B9 /* en */,
-			);
-			name = BIDViewController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

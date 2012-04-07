@@ -47,6 +47,7 @@
 		E91EEC608BB046CE9C372338 /* 27.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372337 /* 27.jpg */; };
 		E91EEC608BB046CE9C37233A /* 28.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C372339 /* 28.jpg */; };
 		E91EEC608BB046CE9C37233C /* 29.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C37233B /* 29.jpg */; };
+		E91EEC608BB046CE9C37233F /* CoverFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = E91EEC608BB046CE9C37233E /* CoverFlowView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +95,8 @@
 		E91EEC608BB046CE9C372337 /* 27.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 27.jpg; sourceTree = "<group>"; };
 		E91EEC608BB046CE9C372339 /* 28.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 28.jpg; sourceTree = "<group>"; };
 		E91EEC608BB046CE9C37233B /* 29.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 29.jpg; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C37233D /* CoverFlowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverFlowView.h; sourceTree = "<group>"; };
+		E91EEC608BB046CE9C37233E /* CoverFlowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoverFlowView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +145,8 @@
 		E91EEC608BB046CE9C3722AA /* AppleTvIntro */ = {
 			isa = PBXGroup;
 			children = (
+				E91EEC608BB046CE9C37233E /* CoverFlowView.m */,
+				E91EEC608BB046CE9C37233D /* CoverFlowView.h */,
 				E91EEC608BB046CE9C3722B4 /* BIDAppDelegate.m */,
 				E91EEC608BB046CE9C3722B3 /* BIDAppDelegate.h */,
 				E91EEC608BB046CE9C3722AB /* Supporting Files */,
@@ -297,6 +302,7 @@
 				E91EEC608BB046CE9C3722B1 /* main.m in Sources */,
 				E91EEC608BB046CE9C3722B5 /* BIDAppDelegate.m in Sources */,
 				A936B438152FEA7F000885EC /* BIDRootViewController.m in Sources */,
+				E91EEC608BB046CE9C37233F /* CoverFlowView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

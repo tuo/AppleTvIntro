@@ -9,6 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <CoreGraphics/CoreGraphics.h>
 #import "BIDRootViewController.h"
+#import "CoverFlowView.h"
 #define COVER_W 225
 #define COVER_H 225 * 0.8
 #define MARGIN 25
@@ -20,8 +21,11 @@
 
 @end
 
-@implementation BIDRootViewController
+@implementation BIDRootViewController{
+    NSMutableArray *_imageLayers;
+}
 @synthesize imagesView;
+@synthesize coverFlowView;
 
 - (void)didReceiveMemoryWarning
 {
@@ -40,12 +44,13 @@
     
 }
 
+
 - (void) renderGrid
 {
     
     //    CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
     //                                        rotationAndPerspectiveTransform.m34 = 1.0 / -500;
-    
+
     CATransform3D rotationAndPerspectiveTransform = CATransform3DMakeRotation(0, 0.2, 1, 0);
     //rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, 0.2, 1, 0, 0);
     float zDistance = 500;
@@ -57,16 +62,23 @@
     self.imagesView.layer.sublayerTransform = rotationAndPerspectiveTransform;
     self.imagesView.layer.borderColor = [UIColor orangeColor].CGColor;
     self.imagesView.layer.borderWidth = 2;
-    
+
+    NSMutableArray *animationZoomOuts = [[NSMutableArray alloc] init];
+
+
+    _imageLayers = [[NSMutableArray alloc] init];
+
     int i = 0;
     float posX = MARGIN;
     float posY = MARGIN;
-    
+
+
     float posZ ;
     for (;i < 30;)
     {
         UIImage *img = [UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg", i]];
         CAShapeLayer *layer = [CAShapeLayer layer];
+        [_imageLayers addObject:layer];
         CGRect rect = CGRectMake(posX, posY, COVER_W, COVER_H);
         
         layer.frame = rect;
@@ -147,8 +159,18 @@
         if ( i % COLS == 0)
             posx = 0;
         
-        
-        
+
+        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"zPosition"];
+                    animation.toValue = [NSNumber numberWithInt: posZ + 200];
+        //animation.toValue = [NSValue valueWithCGPoint:CGPointMake(layer.position.x - 400, layer.position.y -100)];
+                    animation.fillMode = kCAFillModeForwards;
+                    animation.duration = 1;
+                    animation.repeatCount = MAXFLOAT;
+                    animation.autoreverses = YES;
+                    animation.removedOnCompletion = NO;
+                    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+
+        [animationZoomOuts addObject:animation];
         CATransform3D transform3D= CATransform3DTranslate(rotationAndPerspectiveTransform, -posx , 0.0, 0);
         transform3D= CATransform3DTranslate(transform3D, -300 , -300, 0);
         transform3D= CATransform3DTranslate(transform3D, 0 , 0.0, -posZ);
@@ -156,6 +178,9 @@
         posZ += CGRectGetWidth(rect) * sinf((COLS/2 - i% COLS) * M_PI / 180.0f);
         //            /layer.mask = nil;
         layer.transform = transform3D;
+
+
+
         
         //        if(i % COLS == 0){
         //            posZ = CGRectGetWidth(rect) * sinf(5.0f * M_PI / 180.0f);
@@ -215,14 +240,85 @@
     }
     
     //[self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width, posY+GAP+COVER_H)];
-    
-    
+
+
+
+
+    for (int i = 0; i < animationZoomOuts.count; i++) {
+            CALayer *imageLayer = [_imageLayers objectAtIndex:i];
+            CABasicAnimation *animation = [animationZoomOuts objectAtIndex:i];
+       // [imageLayer addAnimation:animation forKey:@"aniamionLayer"];
+    }
+
+
+
+//        animation = [CABasicAnimation animationWithKeyPath:@"frame.origin.x"];
+//        animation.toValue = [NSNumber numberWithInt:400];
+//        animation.fillMode = kCAFillModeForwards;
+//        animation.duration = 4;
+//        animation.repeatCount = 10;
+//        animation.autoreverses = YES;
+//
+//    for (CALayer *iLayer in _imageLayers){
+//            [iLayer addAnimation:animation forKey:@"aniamionLayer1"];
+//        }
+//
+
+    //[self performSelector:@selector(translateTo) withObject:nil afterDelay:1];
+
+
+    self.coverFlowView.backgroundColor = [UIColor lightGrayColor];
+
+
+    NSMutableArray *sourceImages = [NSMutableArray arrayWithCapacity:30];
+    for (int i = 0; i <30 ; i++) {
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg", i]];
+        [sourceImages addObject:image];
+    }
+
+    //CoverFlowView *coverFlowView = [CoverFlowView coverFlowViewWithFrame: frame andImages:_arrImages sidePieces:6 sideScale:0.35 middleScale:0.6];
+    CoverFlowView *coverFlowView = [CoverFlowView coverFlowViewWithFrame:self.coverFlowView.bounds andImages:sourceImages sideImageCount:10 sideImageScale:0.55 middleImageScale:0.8];
+    [self.coverFlowView addSubview:coverFlowView];
 }
+
+- (void)translatoBackZ {
+   //To change the template use AppCode | Preferences | File Templates.
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"zPosition"];
+    animation.toValue = [NSNumber numberWithInt:- 400];
+    animation.fillMode = kCAFillModeForwards;
+    animation.duration = 1;
+    animation.repeatCount = 0;
+    animation.autoreverses = NO;
+    animation.removedOnCompletion = NO;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    for (CALayer *iLayer in _imageLayers){
+
+        [iLayer addAnimation:animation forKey:@"a1niamionLayer"];
+    }
+}
+
+- (void)translateTo {
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
+        animation.toValue = [NSValue valueWithCGPoint:CGPointMake(self.imagesView.layer .position.x - 400, self.imagesView.layer.position.y )];
+        animation.fillMode = kCAFillModeForwards;
+        animation.duration = 1;
+        animation.repeatCount =1;
+        animation.autoreverses = NO;
+        animation.removedOnCompletion = NO;
+        animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        //for (CALayer *iLayer in _imageLayers){
+            [self.imagesView.layer addAnimation:animation forKey:@"aniamionLayer1"];
+        //}
+   // [self performSelector:@selector(translatoBackZ) withObject:nil afterDelay:1];
+}
+
+
 
 
 - (void)viewDidUnload
 {
     [self setImagesView:nil];
+    [self setCoverFlowView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

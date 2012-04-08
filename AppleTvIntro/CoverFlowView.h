@@ -67,6 +67,7 @@
 
 -(NSArray *)getTemplateLayers;
 
+-(void)setImageSources:(NSArray *)images;
 
 @end
 

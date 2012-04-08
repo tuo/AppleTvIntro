@@ -47,7 +47,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
 
     [self.imagesView setBackgroundColor:[UIColor whiteColor]];
-    [self.imagesView setBackgroundColor:[UIColor whiteColor]];
+    [self.imagesView setBackgroundColor:[UIColor lightGrayColor]];
     self.galleryLayer = [CALayer layer];
     self.coverFlowLayer = [CALayer layer];
 
@@ -58,7 +58,8 @@
     //[self.imagesView.layer addSublayer:self.coverFlowLayer];
 
     CATransform3D perspective = CATransform3DIdentity;
-    perspective.m34 = 1.0 / -500;
+    perspective.m34 = 1.0 / -550;
+    //perspective = CATransform3DRotate(perspective, .62, 0, 1, 0);	//
     self.imagesView.layer.sublayerTransform = perspective;
 
     [self renderGrid];
@@ -259,7 +260,7 @@
     CGRect coverFlowFrame = CGRectMake(0, self.imagesView.bounds.size.height - 300, self.imagesView.bounds.size.width, 300);
     //CoverFlowView *coverFlowView = [CoverFlowView coverFlowViewWithFrame: frame andImages:_arrImages sidePieces:6 sideScale:0.35 middleScale:0.6];
     //CoverFlowView *coverFlowView = [CoverFlowView coverFlowViewWithFrame:coverFlowFrame andImages:sourceImages sideImageCount:COLS/2 sideImageScale:0.55 middleImageScale:0.8];
-    CoverFlowView *coverFlowView = [CoverFlowView coverFlowInLayer: self.imagesView.layer andImages:sourceImages sideImageCount:COLS/2 sideImageScale:0.55 middleImageScale:0.8];
+    CoverFlowView *coverFlowView = [CoverFlowView coverFlowInLayer: self.imagesView.layer andImages:sourceImages sideImageCount:3 sideImageScale:0.55 middleImageScale:0.8];
 
     coverFlowView.layer.sublayerTransform = self.imagesView.layer.sublayerTransform;
     [coverFlowView setupTemplateLayers];
@@ -270,11 +271,16 @@
     //[coverFlowView setupImages];
 //    [self.imagesView addSubview:coverFlowView];
 
-
-    for (int j = 0; j < COLS; j++) {
-
+    NSMutableArray *selectedImages = [[NSMutableArray alloc] init];
+    for (int j = 0; j < COLS * 2; j++) {
+        [selectedImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg", j]]];
         CALayer *imgLayer = [_imageLayers objectAtIndex:j];
-        CALayer *templateLayer = [[coverFlowView getTemplateLayers] objectAtIndex: j + 1];
+        CALayer *templateLayer = [[coverFlowView getTemplateLayers] objectAtIndex: 0];
+        if (j < [coverFlowView getTemplateLayers].count - 2){
+            NSLog(@"j : %i, count: %d", j, [coverFlowView getTemplateLayers].count);
+            templateLayer = [[coverFlowView getTemplateLayers] objectAtIndex: j + 1];
+        }
+
             //imgLayer.zPosition = -0;
 
         float destiZPosition = templateLayer.zPosition;
@@ -299,33 +305,33 @@
 
         theGroup.duration = 5.0;
         theGroup.repeatCount = 10000;
-        theGroup.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+        theGroup.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 
 
         // Add the animation group to the templateLayer
         CABasicAnimation *zPositionAnimation = [CABasicAnimation animationWithKeyPath:@"zPosition"];
         zPositionAnimation.toValue = [NSNumber numberWithFloat:destiZPosition];
         zPositionAnimation.repeatCount = 0;
-        zPositionAnimation.duration = 2;
+        zPositionAnimation.duration = 5;
         zPositionAnimation.autoreverses = NO;
         zPositionAnimation.removedOnCompletion = NO;
 
 
 
-            CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"frame.origin"];
-            animation.toValue = [NSValue valueWithCGPoint:CGPointMake(templateLayer.frame.origin.x, templateLayer.frame.origin.y + self.imagesView.bounds.size.height)];
-            animation.repeatCount = MAXFLOAT;
-            animation.duration = 2;
-            animation.autoreverses = YES;
-            animation.removedOnCompletion = NO;
-            //[imgLayer addAnimation:animation forKey:nil];
+//            CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"frame.origin"];
+//            animation.toValue = [NSValue valueWithCGPoint:CGPointMake(templateLayer.frame.origin.x, templateLayer.frame.origin.y + self.imagesView.bounds.size.height)];
+//            animation.repeatCount = MAXFLOAT;
+//            animation.duration = 2;
+//            animation.autoreverses = YES;
+//            animation.removedOnCompletion = NO;
+//            //[imgLayer addAnimation:animation forKey:nil];
 
-            CABasicAnimation *animation1 = [CABasicAnimation animationWithKeyPath:@"bounds.size"];
-            animation1.toValue = [NSValue valueWithCGSize:CGSizeMake(imgLayer.bounds.size.width * 0.8, imgLayer.bounds.size.height * 0.8)];
-            animation1.repeatCount = MAXFLOAT;
-            animation1.duration = 2;
-            animation1.autoreverses = YES;
-            animation1.removedOnCompletion = NO;
+//            CABasicAnimation *animation1 = [CABasicAnimation animationWithKeyPath:@"bounds.size"];
+//            animation1.toValue = [NSValue valueWithCGSize:CGSizeMake(imgLayer.bounds.size.width * 0.8, imgLayer.bounds.size.height * 0.8)];
+//            animation1.repeatCount = MAXFLOAT;
+//            animation1.duration = 2;
+//            animation1.autoreverses = YES;
+//            animation1.removedOnCompletion = NO;
             //[imgLayer addAnimation:animation1 forKey:nil];
 
         //
@@ -334,7 +340,7 @@
                 moveDownLayer.toValue = [NSValue valueWithCGPoint:newPosition];
                 //moveDownLayer.toValue = [NSValue valueWithCGPoint:CGPointMake(400,100)];
                 moveDownLayer.repeatCount = 0;
-                moveDownLayer.duration = 2;
+                moveDownLayer.duration = 5;
                 moveDownLayer.autoreverses = NO;
                 moveDownLayer.removedOnCompletion = NO;
         //[imgLayer addAnimation:moveDownLayer forKey:nil];
@@ -352,12 +358,18 @@
         imgLayer.anchorPoint = templateLayer.anchorPoint;
         imgLayer.transform = destiTransform;
         imgLayer.borderColor = [UIColor redColor].CGColor;
-        imgLayer.borderWidth = 2;
+        imgLayer.borderWidth = 0;
+
+        //TODOList: this part need to be delay after animation group
+        if (j >= ([coverFlowView getTemplateLayers].count - 2)){
+            NSLog(@"hidden yes for j: %d > count: %d" ,j, [coverFlowView getTemplateLayers].count - 2);
+            imgLayer.hidden = YES;
+        }
 
     }
 
 
-
+    //setImageSources
    //[coverFlowView setupImages];
 }
 

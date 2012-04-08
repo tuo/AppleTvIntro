@@ -279,7 +279,7 @@
     }
 }
 
-- (void)setupImages {
+- (void)setupImages{
     // setup the visible area, and start index and end index
     int startingImageIndex = (self.currentRenderingImageIndex - self.sideVisibleImageCount <= 0) ? 0 : self.currentRenderingImageIndex - self.sideVisibleImageCount;
     int endImageIndex = (self.currentRenderingImageIndex + self.sideVisibleImageCount < self.images.count )  ? (self.currentRenderingImageIndex + self.sideVisibleImageCount) : (self.images.count -1 );
@@ -357,6 +357,11 @@
 
 -(NSArray *)getTemplateLayers{
     return [NSArray arrayWithArray:_templateLayers];
+}
+
+- (void)setImageSources:(NSArray *)sImages {
+    self.images = sImages;
+
 }
 
 

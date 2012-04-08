@@ -41,5 +41,26 @@
 - (int)getIndexForMiddle;
 
 
+
+//setup templates
+-(void)setupTemplateLayers;
+//setup images
+-(void)setupImages;
+//remove sublayers (after a certain delay)
+-(void)removeLayersAfterSeconds:(id)layerToBeRemoved;
+//remove all sublayers
+-(void)removeSublayers;
+//empty imagelayers
+-(void)cleanImageLayers;
+//add reflections
+-(void)showImageAndReflection:(CALayer *)layer;
+//adjust the bounds
+-(void)scaleBounds: (CALayer *) layer x:(CGFloat)scaleWidth y:(CGFloat)scaleHeight;
+//add uipagecontrol
+-(void)addPageControl;
+
+-(NSArray *)getTemplateLayers;
+
+
 @end
 

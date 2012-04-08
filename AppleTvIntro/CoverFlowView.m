@@ -12,23 +12,6 @@
 
 @interface CoverFlowView ()
 
-//setup templates
--(void)setupTemplateLayers;
-//setup images
--(void)setupImages;
-//remove sublayers (after a certain delay)
--(void)removeLayersAfterSeconds:(id)layerToBeRemoved;
-//remove all sublayers
--(void)removeSublayers;
-//empty imagelayers
--(void)cleanImageLayers;
-//add reflections
--(void)showImageAndReflection:(CALayer *)layer;
-//adjust the bounds
--(void)scaleBounds: (CALayer *) layer x:(CGFloat)scaleWidth y:(CGFloat)scaleHeight;
-//add uipagecontrol
--(void)addPageControl;
-
 @end
 
 
@@ -55,6 +38,33 @@
 @synthesize sideVisibleImageScale = _sideVisibleImageScale;
 @synthesize middleImageScale = _middleImageScale;
 
++ (id)coverFlowViewWithFrame:(CGRect)frame andImages:(NSMutableArray *)rawImages sideImageCount:(int)sideCount sideImageScale:(CGFloat)sideImageScale middleImageScale:(CGFloat)middleImageScale {
+    CoverFlowView *flowView = [[CoverFlowView alloc] initWithFrame:frame];
+
+    flowView.sideVisibleImageCount = sideCount;
+    flowView.sideVisibleImageScale = sideImageScale;
+    flowView.middleImageScale = middleImageScale;
+
+    //default set middle image to the first image in the source images array
+    flowView.currentRenderingImageIndex = 6;
+
+    flowView.images = [NSMutableArray arrayWithArray:rawImages];
+    flowView.imageLayers = [[NSMutableArray alloc] initWithCapacity:flowView.sideVisibleImageCount* 2 + 1];
+    flowView.templateLayers = [[NSMutableArray alloc] initWithCapacity:(flowView.sideVisibleImageCount + 1)* 2 + 1];
+
+    //register the pan gesture to figure out whether user has intention to move to next/previous image
+    UIPanGestureRecognizer *gestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:flowView action:@selector(handleGesture:)];
+    [flowView addGestureRecognizer:gestureRecognizer];
+
+    //now almost setup
+    //[flowView setupTemplateLayers];
+
+    //[flowView setupImages];
+
+    //[flowView addPageControl];
+
+    return flowView;
+}
 
 - (void)adjustReflectionBounds:(CALayer *)layer scale:(CGFloat)scale {
 // set originLayer's reflection bounds
@@ -178,41 +188,15 @@
 
 }
 
-+ (id)coverFlowViewWithFrame:(CGRect)frame andImages:(NSMutableArray *)rawImages sideImageCount:(int)sideCount sideImageScale:(CGFloat)sideImageScale middleImageScale:(CGFloat)middleImageScale {
-    CoverFlowView *flowView = [[CoverFlowView alloc] initWithFrame:frame];
 
-    flowView.sideVisibleImageCount = sideCount;
-    flowView.sideVisibleImageScale = sideImageScale;
-    flowView.middleImageScale = middleImageScale;
-
-    //default set middle image to the first image in the source images array
-    flowView.currentRenderingImageIndex = 6;
-
-    flowView.images = [NSMutableArray arrayWithArray:rawImages];
-    flowView.imageLayers = [[NSMutableArray alloc] initWithCapacity:flowView.sideVisibleImageCount* 2 + 1];
-    flowView.templateLayers = [[NSMutableArray alloc] initWithCapacity:(flowView.sideVisibleImageCount + 1)* 2 + 1];
-
-    //register the pan gesture to figure out whether user has intention to move to next/previous image
-    UIPanGestureRecognizer *gestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:flowView action:@selector(handleGesture:)];
-    [flowView addGestureRecognizer:gestureRecognizer];
-
-    //now almost setup
-    [flowView setupTemplateLayers];
-
-    [flowView setupImages];
-
-    [flowView addPageControl];
-
-    return flowView;
-}
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        //set up perspective
-        CATransform3D transformPerspective = CATransform3DIdentity;
-                        transformPerspective.m34 = -1.0 / 500.0;
-                        self.layer.sublayerTransform = transformPerspective;
+//        //set up perspective
+//        CATransform3D transformPerspective = CATransform3DIdentity;
+//                        transformPerspective.m34 = -1.0 / 500.0;
+//                        self.layer.sublayerTransform = transformPerspective;
     }
 
     return self;
@@ -246,6 +230,7 @@
 
     CALayer *layer = [CALayer layer];
     layer.position = CGPointMake(centerX, centerY);
+    layer.zPosition = 0;
     [self.templateLayers addObject:layer];
     //right
     for(int i = 0; i <= self.sideVisibleImageCount; i++){
@@ -334,6 +319,9 @@
     return 0;
 }
 
+-(NSArray *)getTemplateLayers{
+    return [NSArray arrayWithArray:_templateLayers];
+}
 
 
 @end

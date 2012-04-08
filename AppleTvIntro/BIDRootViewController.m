@@ -25,7 +25,7 @@
     NSMutableArray *_imageLayers;
 }
 @synthesize imagesView;
-@synthesize coverFlowView;
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -39,7 +39,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    
+
+    [self.view setBackgroundColor:[UIColor blackColor]];
     [self renderGrid];
     
 }
@@ -61,7 +62,8 @@
     
     self.imagesView.layer.sublayerTransform = rotationAndPerspectiveTransform;
     self.imagesView.layer.borderColor = [UIColor orangeColor].CGColor;
-    self.imagesView.layer.borderWidth = 2;
+    self.imagesView.layer.borderWidth = 0;
+
 
     NSMutableArray *animationZoomOuts = [[NSMutableArray alloc] init];
 
@@ -112,7 +114,7 @@
         //            offset = 2;
         
         
-        layer.zPosition = -800;
+        layer.zPosition = -2000;
         CGPoint topMiddle = CGPointMake(CGRectGetWidth(layerBounds)/2  , offset);
         CGPoint bottomMiddle = CGPointMake(CGRectGetWidth(layerBounds)/2  , CGRectGetHeight(layerBounds) - offset);
         
@@ -165,70 +167,20 @@
         //animation.toValue = [NSValue valueWithCGPoint:CGPointMake(layer.position.x - 400, layer.position.y -100)];
                     animation.fillMode = kCAFillModeForwards;
                     animation.duration = 1;
-                    animation.repeatCount = MAXFLOAT;
-                    animation.autoreverses = YES;
+                    animation.repeatCount = 0;
+                    animation.autoreverses = NO;
                     animation.removedOnCompletion = NO;
                     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 
         [animationZoomOuts addObject:animation];
-        CATransform3D transform3D= CATransform3DTranslate(rotationAndPerspectiveTransform, -posx , 0.0, 0);
+        //CATransform3D transform3D= CATransform3DTranslate(rotationAndPerspectiveTransform, -posx , 0.0, 0);
+        CATransform3D transform3D= CATransform3DMakeTranslation(-posx , 0.0, 0);
         transform3D= CATransform3DTranslate(transform3D, -300 , -300, 0);
         transform3D= CATransform3DTranslate(transform3D, 0 , 0.0, -posZ);
         transform3D = CATransform3DRotate(transform3D, (COLS/2 - i% COLS) * M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
         posZ += CGRectGetWidth(rect) * sinf((COLS/2 - i% COLS) * M_PI / 180.0f);
         //            /layer.mask = nil;
         layer.transform = transform3D;
-
-
-
-        
-        //        if(i % COLS == 0){
-        //            posZ = CGRectGetWidth(rect) * sinf(5.0f * M_PI / 180.0f);
-        //            NSLog(@"PSOZ sin : %f,  cos: %f", posZ, CGRectGetWidth(rect) * cosf(5.0f * M_PI / 180.0f));
-        //
-        //              CATransform3D transform3D = CATransform3DRotate(rotationAndPerspectiveTransform, 5.0f * M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
-        //            layer.transform = transform3D;
-        //
-        ////             CATransform3D transform = CATransform3DMakeRotation(15 * M_PI /180, 0, -1.0, 0);
-        ////            layer.transform = transform;
-        //            //CATransform3D transform = CATransform3DMakeTranslation(0.0, 0.0, -z);
-        //            //    self.topHalfLayer.transform = CATransform3DRotate(transform, topAngle, 1.0, 0.0, 0.0);
-        //            //    self.bottomHalfLayer.transform = CATransform3DRotate(transform, bottomAngle, 1.0, 0.0, 0.0);
-        //        }
-        //        if (i % COLS == 1){
-        //            int posx = CGRectGetWidth(rect) * (1 - cosf(5.0f * M_PI / 180.0f));
-        //            CATransform3D transform3D= CATransform3DTranslate(rotationAndPerspectiveTransform, -(posx + MARGIN - 2) , 0.0, 0);
-        //            transform3D= CATransform3DTranslate(transform3D, 0 , 0.0, -posZ);
-        //            transform3D = CATransform3DRotate(transform3D, 2.0f * M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
-        //            posZ += CGRectGetWidth(rect) * sinf(2.0f * M_PI / 180.0f);
-        ////            /layer.mask = nil;
-        //            layer.transform = transform3D;
-        //
-        //        }
-        //        if (i % COLS==2){
-        //            int posx = CGRectGetWidth(rect) * (1 - cosf(5.0f * M_PI / 180.0f));
-        //            CATransform3D transform3D= CATransform3DTranslate(rotationAndPerspectiveTransform, -(MARGIN + 18) , 0.0, -posZ);
-        //            transform3D = CATransform3DRotate(transform3D, -2.0f * M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
-        //            layer.transform = transform3D;
-        //            posZ -= CGRectGetWidth(rect) * sinf(2.0f * M_PI / 180.0f);
-        //
-        //        }
-        //        if(i % COLS== 3){
-        //
-        //
-        //                        int posx = CGRectGetWidth(rect) * (1 - cosf(5.0f * M_PI / 180.0f));
-        //
-        //            CATransform3D transform3D= CATransform3DTranslate(rotationAndPerspectiveTransform, -(2 * MARGIN + 10 ) , 0.0, -posZ);
-        //            transform3D = CATransform3DRotate(transform3D, -5.0f * M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
-        //                        layer.transform = transform3D;
-        //
-        //
-        //
-        //        }
-        
-        
-        
-        
         posX += GAP+COVER_W;
         i++;
         
@@ -247,7 +199,18 @@
     for (int i = 0; i < animationZoomOuts.count; i++) {
             CALayer *imageLayer = [_imageLayers objectAtIndex:i];
             CABasicAnimation *animation = [animationZoomOuts objectAtIndex:i];
-       // [imageLayer addAnimation:animation forKey:@"aniamionLayer"];
+        if (i == 17){
+            animation.toValue = [NSNumber numberWithInt: 0];
+            [imageLayer addAnimation:animation forKey:@"aniamionLayer"];
+
+            CAAnimationGroup *group = [CAAnimationGroup animation];
+
+            CATransform3D transform3D= CATransform3DTranslate(imageLayer.transform, 00 , 300, 0);
+            transform3D = CATransform3DScale(transform3D, 0.8, 0.8, 0);
+            imageLayer.transform = transform3D;
+            //[group setAnimations:<#(NSArray *)anAnimations#>]
+        }
+
     }
 
 
@@ -267,7 +230,7 @@
     //[self performSelector:@selector(translateTo) withObject:nil afterDelay:1];
 
 
-    self.coverFlowView.backgroundColor = [UIColor lightGrayColor];
+    //self.coverFlowView.backgroundColor = [UIColor lightGrayColor];
 
 
     NSMutableArray *sourceImages = [NSMutableArray arrayWithCapacity:30];
@@ -277,8 +240,8 @@
     }
 
     //CoverFlowView *coverFlowView = [CoverFlowView coverFlowViewWithFrame: frame andImages:_arrImages sidePieces:6 sideScale:0.35 middleScale:0.6];
-    CoverFlowView *coverFlowView = [CoverFlowView coverFlowViewWithFrame:self.coverFlowView.bounds andImages:sourceImages sideImageCount:10 sideImageScale:0.55 middleImageScale:0.8];
-    [self.coverFlowView addSubview:coverFlowView];
+    //CoverFlowView *coverFlowView = [CoverFlowView coverFlowViewWithFrame:self.coverFlowView.bounds andImages:sourceImages sideImageCount:10 sideImageScale:0.55 middleImageScale:0.8];
+    //[self.coverFlowView addSubview:coverFlowView];
 }
 
 - (void)translatoBackZ {
@@ -318,7 +281,6 @@
 - (void)viewDidUnload
 {
     [self setImagesView:nil];
-    [self setCoverFlowView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

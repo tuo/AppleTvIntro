@@ -11,7 +11,4 @@
 @interface BIDRootViewController : UIViewController
 @property (strong, nonatomic) IBOutlet UIView *imagesView;
 
-
-@property (strong, nonatomic) IBOutlet UIView *coverFlowView;
-
 @end

@@ -5,6 +5,8 @@
 //
 
 
+@class CALayer;
+
 @interface CoverFlowView : UIView
 
 
@@ -31,6 +33,8 @@
 @property (nonatomic, retain) UIPageControl *pageControl;
 
 //factory method
+@property(nonatomic, strong) CALayer *rootLayer;
+
 + (id)coverFlowViewWithFrame:(CGRect)frame
                    andImages: (NSMutableArray *)rawImages
               sideImageCount:(int) sideCount
@@ -38,6 +42,8 @@
             middleImageScale: (CGFloat) middleImageScale;
 
 //get index for current image that in the middle in images
++ (CoverFlowView *)coverFlowInLayer:(CALayer *)rootLayer andImages:(NSMutableArray *)array sideImageCount:(char)i1 sideImageScale:(float)d middleImageScale:(float)d1;
+
 - (int)getIndexForMiddle;
 
 

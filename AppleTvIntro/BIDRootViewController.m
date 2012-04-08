@@ -202,7 +202,7 @@
 
         for (int i = 0; i < animationZoomOuts.count; i++) {
                 CALayer *imageLayer = [_imageLayers objectAtIndex:i];
-            NSLog(@"x :%f, y: %f , width: %f, height: %f", imageLayer.frame.origin.x,imageLayer.frame.origin.y,imageLayer.frame.size.width,imageLayer.frame.size.height);
+          //  NSLog(@"x :%f, y: %f , width: %f, height: %f", imageLayer.frame.origin.x,imageLayer.frame.origin.y,imageLayer.frame.size.width,imageLayer.frame.size.height);
                 CABasicAnimation *animation = [animationZoomOuts objectAtIndex:i];
             //if (i == 17){
                 animation.toValue = [NSNumber numberWithInt: 0];
@@ -248,70 +248,117 @@
 
 - (void)flyToCoverFlow{
     NSMutableArray *sourceImages = [NSMutableArray array];
+    float width,height;
     for (int i = 0; i < COLS; i++) {
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg", i]];
+        width  = image.size.width;
+        height = image.size.height;
         [sourceImages addObject:image];
     }
 
     CGRect coverFlowFrame = CGRectMake(0, self.imagesView.bounds.size.height - 300, self.imagesView.bounds.size.width, 300);
     //CoverFlowView *coverFlowView = [CoverFlowView coverFlowViewWithFrame: frame andImages:_arrImages sidePieces:6 sideScale:0.35 middleScale:0.6];
-    CoverFlowView *coverFlowView = [CoverFlowView coverFlowViewWithFrame:coverFlowFrame andImages:sourceImages sideImageCount:COLS/2 sideImageScale:0.55 middleImageScale:0.8];
+    //CoverFlowView *coverFlowView = [CoverFlowView coverFlowViewWithFrame:coverFlowFrame andImages:sourceImages sideImageCount:COLS/2 sideImageScale:0.55 middleImageScale:0.8];
+    CoverFlowView *coverFlowView = [CoverFlowView coverFlowInLayer: self.imagesView.layer andImages:sourceImages sideImageCount:COLS/2 sideImageScale:0.55 middleImageScale:0.8];
+
     coverFlowView.layer.sublayerTransform = self.imagesView.layer.sublayerTransform;
     [coverFlowView setupTemplateLayers];
-    CALayer *layer = [[coverFlowView getTemplateLayers] objectAtIndex:2];
+
+//    coverFlowView.layer.borderColor = [UIColor orangeColor].CGColor;
+//    coverFlowView.layer.borderWidth = 2;
 
     //[coverFlowView setupImages];
-    [self.imagesView addSubview:coverFlowView];
+//    [self.imagesView addSubview:coverFlowView];
 
 
-    CALayer *imgLayer = [_imageLayers objectAtIndex:0];
-    imgLayer.zPosition = -0;
+    for (int j = 0; j < COLS; j++) {
+
+        CALayer *imgLayer = [_imageLayers objectAtIndex:j];
+        CALayer *templateLayer = [[coverFlowView getTemplateLayers] objectAtIndex: j + 1];
+            //imgLayer.zPosition = -0;
+
+        float destiZPosition = templateLayer.zPosition;
 
 
-    CGFloat yGap = self.imagesView.bounds.size.height - imgLayer.frame.origin.y ;
-    CGFloat xGap = layer.frame.origin.x - imgLayer.frame.origin.x ;
+        float scale = [[templateLayer valueForKey:@"scale"] floatValue];
+        NSLog(@"scale: %f", scale);
+        //CGPoint newPosition = CGPointMake(templateLayer.position.x -(width/2) + width * (1 - scale)/2,templateLayer.position.y - 150 + height * (1 - scale)/2);
+        CGPoint newPosition = templateLayer.position;
+        NSLog(@"new template position: %@", [NSValue valueWithCGPoint:newPosition] );
 
-    NSLog(@"%f, %f, %f", self.imagesView.bounds.size.height , imgLayer.frame.origin.y , layer.frame.origin.y);
-    NSLog(@"x gap : %f, y gap : %f", xGap, yGap);
+        CATransform3D destiTransform = templateLayer.transform;
+
+            CGFloat yGap = self.imagesView.bounds.size.height - imgLayer.frame.origin.y ;
+            CGFloat xGap = templateLayer.frame.origin.x - imgLayer.frame.origin.x ;
+
+//            NSLog(@"%f, %f, %f", self.imagesView.bounds.size.height , imgLayer.frame.origin.y , templateLayer.frame.origin.y);
+//        NSLog(@"%f, %f, %f", self.imagesView.bounds.size.width , imgLayer.frame.origin.x, templateLayer.frame.origin.x);
+//            NSLog(@"x gap : %f, y gap : %f", xGap, yGap);
+
+        CAAnimationGroup *theGroup = [CAAnimationGroup animation];
+
+        theGroup.duration = 5.0;
+        theGroup.repeatCount = 10000;
+        theGroup.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+
+
+        // Add the animation group to the templateLayer
+        CABasicAnimation *zPositionAnimation = [CABasicAnimation animationWithKeyPath:@"zPosition"];
+        zPositionAnimation.toValue = [NSNumber numberWithFloat:destiZPosition];
+        zPositionAnimation.repeatCount = 0;
+        zPositionAnimation.duration = 2;
+        zPositionAnimation.autoreverses = NO;
+        zPositionAnimation.removedOnCompletion = NO;
 
 
 
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"frame.origin"];
-    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(layer.frame.origin.x, layer.frame.origin.y + self.imagesView.bounds.size.height)];
-    animation.repeatCount = MAXFLOAT;
-    animation.duration = 2;
-    animation.autoreverses = YES;
-    animation.removedOnCompletion = NO;
-    //[imgLayer addAnimation:animation forKey:nil];
+            CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"frame.origin"];
+            animation.toValue = [NSValue valueWithCGPoint:CGPointMake(templateLayer.frame.origin.x, templateLayer.frame.origin.y + self.imagesView.bounds.size.height)];
+            animation.repeatCount = MAXFLOAT;
+            animation.duration = 2;
+            animation.autoreverses = YES;
+            animation.removedOnCompletion = NO;
+            //[imgLayer addAnimation:animation forKey:nil];
 
-    CABasicAnimation *animation1 = [CABasicAnimation animationWithKeyPath:@"bounds.size"];
-    animation1.toValue = [NSValue valueWithCGSize:CGSizeMake(imgLayer.bounds.size.width * 0.8, imgLayer.bounds.size.height * 0.8)];
-    animation1.repeatCount = MAXFLOAT;
-    animation1.duration = 2;
-    animation1.autoreverses = YES;
-    animation1.removedOnCompletion = NO;
-    [imgLayer addAnimation:animation1 forKey:nil];
+            CABasicAnimation *animation1 = [CABasicAnimation animationWithKeyPath:@"bounds.size"];
+            animation1.toValue = [NSValue valueWithCGSize:CGSizeMake(imgLayer.bounds.size.width * 0.8, imgLayer.bounds.size.height * 0.8)];
+            animation1.repeatCount = MAXFLOAT;
+            animation1.duration = 2;
+            animation1.autoreverses = YES;
+            animation1.removedOnCompletion = NO;
+            //[imgLayer addAnimation:animation1 forKey:nil];
 
-//
-//    CABasicAnimation *moveDownLayer = [CABasicAnimation animationWithKeyPath:@"position"];
-//        moveDownLayer.toValue = [NSValue valueWithCGPoint:CGPointMake(self.imagesView.bounds.size.width/2,self.imagesView.bounds.size.height)];
-//        //moveDownLayer.toValue = [NSValue valueWithCGPoint:CGPointMake(400,100)];
-//        moveDownLayer.repeatCount = MAXFLOAT;
-//        moveDownLayer.duration = 2;
-//        moveDownLayer.autoreverses = NO;
-//        moveDownLayer.removedOnCompletion = NO;
-//        [imgLayer addAnimation:moveDownLayer forKey:nil];
+        //
+            CABasicAnimation *moveDownLayer = [CABasicAnimation animationWithKeyPath:@"position"];
+                moveDownLayer.toValue = [NSValue valueWithCGPoint:CGPointMake(templateLayer.frame.origin.x,self.imagesView.bounds.size.height + templateLayer.frame.origin.y)];
+                moveDownLayer.toValue = [NSValue valueWithCGPoint:newPosition];
+                //moveDownLayer.toValue = [NSValue valueWithCGPoint:CGPointMake(400,100)];
+                moveDownLayer.repeatCount = 0;
+                moveDownLayer.duration = 2;
+                moveDownLayer.autoreverses = NO;
+                moveDownLayer.removedOnCompletion = NO;
+        //[imgLayer addAnimation:moveDownLayer forKey:nil];
 
-    //CATransform3D transform3D= CATransform3DTranslate(imgLayer.transform, 100, yGap, 0);
-    //CATransform3D transform3D = CATransform3DRotate(imgLayer.transform, (-COLS/2 + 0% COLS) * M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
-    //transform3D = CATransform3DScale(transform3D, 0.8, 0.8, 0);
-    //imgLayer.transform = transform3D;
-//    NSLog(@"imagLayer: %@, %@", imgLayer, imgLayer);
+        theGroup.duration = 2;
+        theGroup.repeatCount = 0;
+        theGroup.autoreverses = NO;
+        theGroup.removedOnCompletion = NO;
+        theGroup.animations = [NSArray arrayWithObjects:zPositionAnimation, moveDownLayer, nil]; // you can add more
+        [imgLayer addAnimation:theGroup forKey:@"zoomAndRotate"];
 
-//    NSLog(@"after imagLayer: %@, %@", imgLayer, imgLayer);
+        imgLayer.bounds = CGRectMake(0,0,width * scale, height * scale);
+        imgLayer.position = newPosition;
+        imgLayer.zPosition = destiZPosition;
+        imgLayer.anchorPoint = templateLayer.anchorPoint;
+        imgLayer.transform = destiTransform;
+        imgLayer.borderColor = [UIColor redColor].CGColor;
+        imgLayer.borderWidth = 2;
 
-    imgLayer.position = CGPointMake(layer.frame.origin.x,self.imagesView.bounds.size.height + layer.frame.origin.y);
+    }
 
+
+
+   //[coverFlowView setupImages];
 }
 
 - (void)rotateCameraAngle

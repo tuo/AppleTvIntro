@@ -26,6 +26,7 @@
     int _sideVisibleImageCount;
     CGFloat _sideVisibleImageScale;
     CGFloat _middleImageScale;
+    CALayer *_rootLayer;
 }
 
 
@@ -37,6 +38,8 @@
 @synthesize sideVisibleImageCount = _sideVisibleImageCount;
 @synthesize sideVisibleImageScale = _sideVisibleImageScale;
 @synthesize middleImageScale = _middleImageScale;
+@synthesize rootLayer = _rootLayer;
+
 
 + (id)coverFlowViewWithFrame:(CGRect)frame andImages:(NSMutableArray *)rawImages sideImageCount:(int)sideCount sideImageScale:(CGFloat)sideImageScale middleImageScale:(CGFloat)middleImageScale {
     CoverFlowView *flowView = [[CoverFlowView alloc] initWithFrame:frame];
@@ -64,6 +67,37 @@
     //[flowView addPageControl];
 
     return flowView;
+}
+
++ (CoverFlowView *)coverFlowInLayer:(CALayer *)rootLayer andImages:(NSMutableArray *)rawImages sideImageCount:(int)sideCount sideImageScale:(CGFloat)sideImageScale middleImageScale:(CGFloat)middleImageScale {
+    CoverFlowView *flowView = [[CoverFlowView alloc] init];
+
+    flowView.sideVisibleImageCount = sideCount;
+    flowView.sideVisibleImageScale = sideImageScale;
+    flowView.middleImageScale = middleImageScale;
+
+    //default set middle image to the first image in the source images array
+    flowView.currentRenderingImageIndex = 6;
+
+    flowView.images = [NSMutableArray arrayWithArray:rawImages];
+    flowView.imageLayers = [[NSMutableArray alloc] initWithCapacity:flowView.sideVisibleImageCount* 2 + 1];
+    flowView.templateLayers = [[NSMutableArray alloc] initWithCapacity:(flowView.sideVisibleImageCount + 1)* 2 + 1];
+
+    //register the pan gesture to figure out whether user has intention to move to next/previous image
+//    UIPanGestureRecognizer *gestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:flowView action:@selector(handleGesture:)];
+//    [flowView addGestureRecognizer:gestureRecognizer];
+
+    //now almost setup
+    //[flowView setupTemplateLayers];
+
+    //[flowView setupImages];
+
+    //[flowView addPageControl];
+
+    flowView.rootLayer = rootLayer;
+    return flowView;
+  //To change the template use AppCode | Preferences | File Templates.
+
 }
 
 - (void)adjustReflectionBounds:(CALayer *)layer scale:(CGFloat)scale {
@@ -203,18 +237,18 @@
 }
 
 -(void)setupTemplateLayers {
-    CGFloat centerX = self.bounds.size.width/2;
-    CGFloat centerY = self.bounds.size.height/2;
+    CGFloat centerX = _rootLayer.bounds.size.width/2;
+    CGFloat centerY = _rootLayer.bounds.size.height -  300/2 ;
 
     //the angle to rotate
-    CGFloat leftRadian = M_PI/3;
-    CGFloat rightRadian = -M_PI/3;
+    CGFloat leftRadian = M_PI/5;
+    CGFloat rightRadian = -M_PI/5;
 
     //gap between images in side
-    CGFloat gapAmongSideImages = 30.0f;
+    CGFloat gapAmongSideImages = 100.0f;
 
     //gap between middle one and neigbour(this word is so hard to type wrong: WTF)
-    CGFloat gapBetweenMiddleAndSide = 100.0f;
+    CGFloat gapBetweenMiddleAndSide = 150.0f;
 
     //setup the layer templates
     //let's start from left side
@@ -223,6 +257,7 @@
        layer.position = CGPointMake(centerX - gapBetweenMiddleAndSide - gapAmongSideImages * (self.sideVisibleImageCount - i), centerY);
        layer.zPosition = (i - self.sideVisibleImageCount - 1) * 10;
        layer.transform = CATransform3DMakeRotation(leftRadian, 0, 1, 0);
+       [layer setValue:[NSNumber numberWithFloat:self.sideVisibleImageScale] forKey:@"scale"];
        [self.templateLayers addObject:layer];
     }
 
@@ -231,6 +266,7 @@
     CALayer *layer = [CALayer layer];
     layer.position = CGPointMake(centerX, centerY);
     layer.zPosition = 0;
+    [layer setValue:[NSNumber numberWithFloat:self.middleImageScale] forKey:@"scale"];
     [self.templateLayers addObject:layer];
     //right
     for(int i = 0; i <= self.sideVisibleImageCount; i++){
@@ -238,6 +274,7 @@
         layer.position = CGPointMake(centerX + gapBetweenMiddleAndSide + gapAmongSideImages * i, centerY);
         layer.zPosition = (i + 1) * -10;
         layer.transform = CATransform3DMakeRotation(rightRadian, 0, 1, 0);
+        [layer setValue:[NSNumber numberWithFloat:self.sideVisibleImageScale] forKey:@"scale"];
         [self.templateLayers addObject:layer];
     }
 }
@@ -270,7 +307,6 @@
         //show its reflections
         [self showImageAndReflection:imageLayer];
     }
-
 }
 
 // 添加layer及其“倒影”
@@ -305,7 +341,7 @@
     // 作为layer的sublayer
     [layer addSublayer:reflectLayer];
     // 加入UICoverFlowView的sublayers
-    [self.layer addSublayer:layer];
+    [self.rootLayer addSublayer:layer];
 }
 
 - (void)addPageControl {

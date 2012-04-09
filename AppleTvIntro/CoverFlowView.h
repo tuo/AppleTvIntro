@@ -42,7 +42,8 @@
             middleImageScale: (CGFloat) middleImageScale;
 
 //get index for current image that in the middle in images
-+ (CoverFlowView *)coverFlowInLayer:(CALayer *)rootLayer andImages:(NSMutableArray *)array sideImageCount:(char)i1 sideImageScale:(float)d middleImageScale:(float)d1;
+
++ (id)coverFlowInView:(UIView *)view andImages:(NSMutableArray *)rawImages sideImageCount:(int)sideCount sideImageScale:(CGFloat)sideImageScale middleImageScale:(CGFloat)middleImageScale ;
 
 - (int)getIndexForMiddle;
 

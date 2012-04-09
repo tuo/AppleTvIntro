@@ -264,7 +264,7 @@
     CGRect coverFlowFrame = CGRectMake(0, self.imagesView.bounds.size.height - 300, self.imagesView.bounds.size.width, 300);
     //CoverFlowView *coverFlowView = [CoverFlowView coverFlowViewWithFrame: frame andImages:_arrImages sidePieces:6 sideScale:0.35 middleScale:0.6];
     //CoverFlowView *coverFlowView = [CoverFlowView coverFlowViewWithFrame:coverFlowFrame andImages:sourceImages sideImageCount:COLS/2 sideImageScale:0.55 middleImageScale:0.8];
-    coverFlowView = [CoverFlowView coverFlowInLayer: self.imagesView.layer andImages:sourceImages sideImageCount:3 sideImageScale:0.55 middleImageScale:0.8];
+    coverFlowView = [CoverFlowView coverFlowInView: self.imagesView andImages:sourceImages sideImageCount:3 sideImageScale:0.55 middleImageScale:0.8];
 
     coverFlowView.layer.sublayerTransform = self.imagesView.layer.sublayerTransform;
     [coverFlowView setupTemplateLayers];

@@ -69,7 +69,8 @@
     return flowView;
 }
 
-+ (CoverFlowView *)coverFlowInLayer:(CALayer *)rootLayer andImages:(NSMutableArray *)rawImages sideImageCount:(int)sideCount sideImageScale:(CGFloat)sideImageScale middleImageScale:(CGFloat)middleImageScale {
+
++ (id)coverFlowInView:(UIView *)view andImages:(NSMutableArray *)rawImages sideImageCount:(int)sideCount sideImageScale:(CGFloat)sideImageScale middleImageScale:(CGFloat)middleImageScale {
     CoverFlowView *flowView = [[CoverFlowView alloc] init];
 
     flowView.sideVisibleImageCount = sideCount;
@@ -85,7 +86,7 @@
 
     //register the pan gesture to figure out whether user has intention to move to next/previous image
     UIPanGestureRecognizer *gestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:flowView action:@selector(handleGesture:)];
-    [flowView addGestureRecognizer:gestureRecognizer];
+    [view addGestureRecognizer:gestureRecognizer];
 
     //now almost setup
     //[flowView setupTemplateLayers];
@@ -94,10 +95,13 @@
 
     //[flowView addPageControl];
 
-    flowView.rootLayer = rootLayer;
+    flowView.rootLayer = view.layer;
     return flowView;
   //To change the template use AppCode | Preferences | File Templates.
 
+}
+- (void)removeLayerFromSuper:(CALayer *)layerToBeRemoved {
+    [layerToBeRemoved removeFromSuperlayer];
 }
 
 - (void)adjustReflectionBounds:(CALayer *)layer scale:(CGFloat)scale {
@@ -151,7 +155,11 @@
         if(self.currentRenderingImageIndex >= self.sideVisibleImageCount){
             CALayer *removeLayer = [self.imageLayers objectAtIndex:0];
             [self.imageLayers removeObject:removeLayer];
-            [removeLayer removeFromSuperlayer];
+            CABasicAnimation *fadeOut = [CABasicAnimation animationWithKeyPath:@"opacity"];
+                        [fadeOut setToValue:[NSNumber numberWithFloat:0.0]];
+                        [fadeOut setDuration:0.5f];
+                        [removeLayer addAnimation:fadeOut forKey:@"fadeout"];
+                        [self performSelector:@selector(removeLayerFromSuper:) withObject:removeLayer afterDelay:0.5f];
         }
         int num = self.images.count - self.sideVisibleImageCount - 1;
         if (self.currentRenderingImageIndex < num){
@@ -177,7 +185,11 @@
         if (self.currentRenderingImageIndex + self.sideVisibleImageCount <= self.images.count -1) {
             CALayer *removeLayer = [self.imageLayers lastObject];
             [self.imageLayers removeObject:removeLayer];
-            [removeLayer removeFromSuperlayer];
+            CABasicAnimation *fadeOut = [CABasicAnimation animationWithKeyPath:@"opacity"];
+                        [fadeOut setToValue:[NSNumber numberWithFloat:0.0]];
+                        [fadeOut setDuration:0.5f];
+                        [removeLayer addAnimation:fadeOut forKey:@"fadeout"];
+                        [self performSelector:@selector(removeLayerFromSuper:) withObject:removeLayer afterDelay:0.5f];
         }
 
         //check out whether we need to add layer to left, only when (currentIndex - sideCount > 0)

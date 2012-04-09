@@ -27,6 +27,9 @@
 @private
     CALayer *_galleryLayer;
     CALayer *_coverFlowLayer;
+    CoverFlowView *coverFlowView;
+    NSMutableArray *selectedImages;
+
 }
 @synthesize imagesView;
 @synthesize galleryLayer = _galleryLayer;
@@ -247,6 +250,7 @@
         [self performSelector:@selector(flyToCoverFlow) withObject:self afterDelay:1];
     }
 
+
 - (void)flyToCoverFlow{
     NSMutableArray *sourceImages = [NSMutableArray array];
     float width,height;
@@ -260,7 +264,7 @@
     CGRect coverFlowFrame = CGRectMake(0, self.imagesView.bounds.size.height - 300, self.imagesView.bounds.size.width, 300);
     //CoverFlowView *coverFlowView = [CoverFlowView coverFlowViewWithFrame: frame andImages:_arrImages sidePieces:6 sideScale:0.35 middleScale:0.6];
     //CoverFlowView *coverFlowView = [CoverFlowView coverFlowViewWithFrame:coverFlowFrame andImages:sourceImages sideImageCount:COLS/2 sideImageScale:0.55 middleImageScale:0.8];
-    CoverFlowView *coverFlowView = [CoverFlowView coverFlowInLayer: self.imagesView.layer andImages:sourceImages sideImageCount:3 sideImageScale:0.55 middleImageScale:0.8];
+    coverFlowView = [CoverFlowView coverFlowInLayer: self.imagesView.layer andImages:sourceImages sideImageCount:3 sideImageScale:0.55 middleImageScale:0.8];
 
     coverFlowView.layer.sublayerTransform = self.imagesView.layer.sublayerTransform;
     [coverFlowView setupTemplateLayers];
@@ -271,7 +275,7 @@
     //[coverFlowView setupImages];
 //    [self.imagesView addSubview:coverFlowView];
 
-    NSMutableArray *selectedImages = [[NSMutableArray alloc] init];
+    selectedImages = [[NSMutableArray alloc] init];
     for (int j = 0; j < COLS * 2; j++) {
         [selectedImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg", j]]];
         CALayer *imgLayer = [_imageLayers objectAtIndex:j];
@@ -365,14 +369,30 @@
             NSLog(@"hidden yes for j: %d > count: %d" ,j, [coverFlowView getTemplateLayers].count - 2);
             imgLayer.hidden = YES;
         }
-
     }
 
 
-    //setImageSources
-   //[coverFlowView setupImages];
+
+   	[self performSelector:@selector(hideImageLayer) withObject:self afterDelay:1.6];
+
+
+    [self performSelector:@selector(showRealmages) withObject:self afterDelay:2.6];
+
 }
 
+- (void)showRealmages {
+    [coverFlowView setImageSources:selectedImages];
+    [coverFlowView setupImages];
+}
+
+
+-(void)hideImageLayer{
+    for (int j = 0; j < COLS * 2; j++) {
+                CALayer *imgLayer = [_imageLayers objectAtIndex:j];
+                imgLayer.bounds = CGRectZero;
+        }
+
+}
 - (void)rotateCameraAngle
 {
 

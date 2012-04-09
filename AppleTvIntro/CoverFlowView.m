@@ -84,8 +84,8 @@
     flowView.templateLayers = [[NSMutableArray alloc] initWithCapacity:(flowView.sideVisibleImageCount + 1)* 2 + 1];
 
     //register the pan gesture to figure out whether user has intention to move to next/previous image
-//    UIPanGestureRecognizer *gestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:flowView action:@selector(handleGesture:)];
-//    [flowView addGestureRecognizer:gestureRecognizer];
+    UIPanGestureRecognizer *gestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:flowView action:@selector(handleGesture:)];
+    [flowView addGestureRecognizer:gestureRecognizer];
 
     //now almost setup
     //[flowView setupTemplateLayers];
@@ -210,6 +210,7 @@
 }
 
 - (void)handleGesture:(UIPanGestureRecognizer *)recognizer {
+    NSLog(@"-----------handle gesture");
    if (recognizer.state == UIGestureRecognizerStateChanged){
        //get offset
        CGPoint offset = [recognizer translationInView:recognizer.view];

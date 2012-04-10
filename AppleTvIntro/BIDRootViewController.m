@@ -337,58 +337,39 @@
 //        NSLog(@"%f, %f, %f", self.imagesView.bounds.size.width , imgLayer.frame.origin.x, templateLayer.frame.origin.x);
 //            NSLog(@"x gap : %f, y gap : %f", xGap, yGap);
 
-        CAAnimationGroup *theGroup = [CAAnimationGroup animation];
-
-        theGroup.duration = 5.0;
-        theGroup.repeatCount = 10000;
-        theGroup.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 
 
         // Add the animation group to the templateLayer
-        CABasicAnimation *zPositionAnimation = [CABasicAnimation animationWithKeyPath:@"zPosition"];
-        zPositionAnimation.toValue = [NSNumber numberWithFloat:destiZPosition];
-        zPositionAnimation.repeatCount = 0;
-        zPositionAnimation.duration = 5;
-        zPositionAnimation.autoreverses = NO;
-        zPositionAnimation.removedOnCompletion = NO;
+//        CABasicAnimation *zPositionAnimation = [CABasicAnimation animationWithKeyPath:@"zPosition"];
+//        zPositionAnimation.toValue = [NSNumber numberWithFloat:destiZPosition];
+//        zPositionAnimation.repeatCount = 0;
+//        zPositionAnimation.duration = 5;
+//        zPositionAnimation.autoreverses = NO;
+//        zPositionAnimation.removedOnCompletion = NO;
+//
+//            CABasicAnimation *moveDownLayer = [CABasicAnimation animationWithKeyPath:@"position"];
+//                moveDownLayer.toValue = [NSValue valueWithCGPoint:CGPointMake(templateLayer.frame.origin.x,self.imagesView.bounds.size.height + templateLayer.frame.origin.y)];
+//                moveDownLayer.toValue = [NSValue valueWithCGPoint:newPosition];
+//                //moveDownLayer.toValue = [NSValue valueWithCGPoint:CGPointMake(400,100)];
+//                moveDownLayer.repeatCount = 0;
+//                moveDownLayer.duration = 5;
+//                moveDownLayer.autoreverses = NO;
+//                moveDownLayer.removedOnCompletion = NO;
+//
+//        CAAnimationGroup *theGroup = [CAAnimationGroup animation];
+//        theGroup.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+//        theGroup.duration = 5;
+//        theGroup.repeatCount = 0;
+//        theGroup.autoreverses = NO;
+//        theGroup.removedOnCompletion = NO;
+//        theGroup.animations = [NSArray arrayWithObjects:zPositionAnimation, moveDownLayer, nil]; // you can add more
+//        [imgLayer addAnimation:theGroup forKey:@"zoomAndRotate"];
+//
 
-
-
-//            CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"frame.origin"];
-//            animation.toValue = [NSValue valueWithCGPoint:CGPointMake(templateLayer.frame.origin.x, templateLayer.frame.origin.y + self.imagesView.bounds.size.height)];
-//            animation.repeatCount = MAXFLOAT;
-//            animation.duration = 2;
-//            animation.autoreverses = YES;
-//            animation.removedOnCompletion = NO;
-//            //[imgLayer addAnimation:animation forKey:nil];
-
-//            CABasicAnimation *animation1 = [CABasicAnimation animationWithKeyPath:@"bounds.size"];
-//            animation1.toValue = [NSValue valueWithCGSize:CGSizeMake(imgLayer.bounds.size.width * 0.8, imgLayer.bounds.size.height * 0.8)];
-//            animation1.repeatCount = MAXFLOAT;
-//            animation1.duration = 2;
-//            animation1.autoreverses = YES;
-//            animation1.removedOnCompletion = NO;
-            //[imgLayer addAnimation:animation1 forKey:nil];
-
-        //
-            CABasicAnimation *moveDownLayer = [CABasicAnimation animationWithKeyPath:@"position"];
-                moveDownLayer.toValue = [NSValue valueWithCGPoint:CGPointMake(templateLayer.frame.origin.x,self.imagesView.bounds.size.height + templateLayer.frame.origin.y)];
-                moveDownLayer.toValue = [NSValue valueWithCGPoint:newPosition];
-                //moveDownLayer.toValue = [NSValue valueWithCGPoint:CGPointMake(400,100)];
-                moveDownLayer.repeatCount = 0;
-                moveDownLayer.duration = 5;
-                moveDownLayer.autoreverses = NO;
-                moveDownLayer.removedOnCompletion = NO;
-        //[imgLayer addAnimation:moveDownLayer forKey:nil];
-
-        theGroup.duration = 2;
-        theGroup.repeatCount = 0;
-        theGroup.autoreverses = NO;
-        theGroup.removedOnCompletion = NO;
-        theGroup.animations = [NSArray arrayWithObjects:zPositionAnimation, moveDownLayer, nil]; // you can add more
-        [imgLayer addAnimation:theGroup forKey:@"zoomAndRotate"];
 
         //imgLayer.bounds = CGRectMake(0,0,width * scale, height * scale);
+        [CATransaction setAnimationDuration:5];
+        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
         imgLayer.bounds = templateLayer.bounds;
         imgLayer.position = newPosition;
         imgLayer.zPosition = destiZPosition;
@@ -396,6 +377,7 @@
         imgLayer.transform = destiTransform;
         imgLayer.borderColor = [UIColor redColor].CGColor;
         imgLayer.borderWidth = 0;
+        imgLayer.mask = nil;
 
         //TODOList: this part need to be delay after animation group
         if (isVisible == NO){
@@ -411,6 +393,8 @@
             imgLayer.opacity = endOpacity;
 
         }
+        [CATransaction commit];
+
     }
 
 
@@ -422,6 +406,8 @@
     [self performSelector:@selector(showRealmages) withObject:self afterDelay:2.6];
 
 }
+
+
 
 - (void)showRealmages {
     [coverFlowView addGestureRecognizer:self.imagesView];

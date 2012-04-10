@@ -462,7 +462,6 @@
         originLayer.zPosition = targetTemplate.zPosition;
         originLayer.transform = targetTemplate.transform;
         originLayer.bounds = targetTemplate.bounds;
-        originLayer.mask = nil;
         originLayer.opacity = endOpacity;
         [CATransaction commit];
 

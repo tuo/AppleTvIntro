@@ -35,6 +35,8 @@
 //factory method
 @property(nonatomic, strong) CALayer *rootLayer;
 
+
+
 + (id)coverFlowViewWithFrame:(CGRect)frame
                    andImages: (NSMutableArray *)rawImages
               sideImageCount:(int) sideCount
@@ -69,6 +71,14 @@
 -(NSArray *)getTemplateLayers;
 
 -(void)setImageSources:(NSArray *)images;
+
+- (void)setSourceImageLayers:(NSMutableArray *)sourceImageLayers;
+
+- (void)setupImagesWithSourceLayers;
+
+- (void)setNormalImageSizeForLayer:(CGSize)size;
+
+@property(nonatomic, strong) NSArray *rawImageLayers;
 
 @end
 

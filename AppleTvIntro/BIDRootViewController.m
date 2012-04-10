@@ -29,6 +29,7 @@
     CALayer *_coverFlowLayer;
     CoverFlowView *coverFlowView;
     NSMutableArray *selectedImages;
+    NSMutableArray *selectedImageLayers;
 
 }
 @synthesize imagesView;
@@ -264,8 +265,10 @@
     CGRect coverFlowFrame = CGRectMake(0, self.imagesView.bounds.size.height - 300, self.imagesView.bounds.size.width, 300);
     //CoverFlowView *coverFlowView = [CoverFlowView coverFlowViewWithFrame: frame andImages:_arrImages sidePieces:6 sideScale:0.35 middleScale:0.6];
     //CoverFlowView *coverFlowView = [CoverFlowView coverFlowViewWithFrame:coverFlowFrame andImages:sourceImages sideImageCount:COLS/2 sideImageScale:0.55 middleImageScale:0.8];
-    coverFlowView = [CoverFlowView coverFlowInView: self.imagesView andImages:sourceImages sideImageCount:3 sideImageScale:0.55 middleImageScale:0.8];
+    const int visibleImageSideCount = 3;
+    coverFlowView = [CoverFlowView coverFlowInView: self.imagesView andImages:sourceImages sideImageCount:visibleImageSideCount sideImageScale:0.55 middleImageScale:0.8];
 
+    [coverFlowView setNormalImageSizeForLayer:[UIImage imageNamed: @"1.jpg"].size];
     coverFlowView.layer.sublayerTransform = self.imagesView.layer.sublayerTransform;
     [coverFlowView setupTemplateLayers];
 
@@ -276,14 +279,43 @@
 //    [self.imagesView addSubview:coverFlowView];
 
     selectedImages = [[NSMutableArray alloc] init];
+
+    selectedImageLayers = [[NSMutableArray alloc] init];
+
+    //pickAndFillInWithSelectedImages
     for (int j = 0; j < COLS * 2; j++) {
         [selectedImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg", j]]];
-        CALayer *imgLayer = [_imageLayers objectAtIndex:j];
-        CALayer *templateLayer = [[coverFlowView getTemplateLayers] objectAtIndex: 0];
-        if (j < [coverFlowView getTemplateLayers].count - 2){
-            NSLog(@"j : %i, count: %d", j, [coverFlowView getTemplateLayers].count);
-            templateLayer = [[coverFlowView getTemplateLayers] objectAtIndex: j + 1];
+        [selectedImageLayers addObject:[_imageLayers objectAtIndex:j]];
+    }
+
+
+    for (int k = 0; k < selectedImageLayers.count; k++) {
+        CALayer *imgLayer = [selectedImageLayers objectAtIndex:k];
+
+        CALayer *templateLayer;
+        int middleIndex = selectedImageLayers.count/2;
+
+        BOOL isVisible = NO;
+
+        //there is no gonna be visible
+        if (k < (middleIndex  - visibleImageSideCount)){
+            NSLog(@"left invisible index: %d", k);
+            templateLayer = [[coverFlowView getTemplateLayers] objectAtIndex: 0];
+        }else if (k <= middleIndex + visibleImageSideCount){ //visible
+            NSLog(@"middle visible index: %d", k);
+            NSLog(@"middle template count: %d,  current index: %d", [coverFlowView getTemplateLayers].count, k - middleIndex + visibleImageSideCount + 1);
+            templateLayer = [[coverFlowView getTemplateLayers] objectAtIndex:(k - (middleIndex - visibleImageSideCount) + 1 )];
+            isVisible = YES;
+        }else{//not visible in right side
+            NSLog(@"right invisible index: %d", k);
+            templateLayer = [[coverFlowView getTemplateLayers] lastObject];
         }
+
+
+//        if (j < [coverFlowView getTemplateLayers].count - 2){
+//            NSLog(@"j : %i, count: %d", j, [coverFlowView getTemplateLayers].count);
+//            templateLayer = [[coverFlowView getTemplateLayers] objectAtIndex: j + 1];
+//        }
 
             //imgLayer.zPosition = -0;
 
@@ -291,10 +323,10 @@
 
 
         float scale = [[templateLayer valueForKey:@"scale"] floatValue];
-        NSLog(@"scale: %f", scale);
+      //  NSLog(@"scale: %f", scale);
         //CGPoint newPosition = CGPointMake(templateLayer.position.x -(width/2) + width * (1 - scale)/2,templateLayer.position.y - 150 + height * (1 - scale)/2);
         CGPoint newPosition = templateLayer.position;
-        NSLog(@"new template position: %@", [NSValue valueWithCGPoint:newPosition] );
+        //NSLog(@"new template position: %@", [NSValue valueWithCGPoint:newPosition] );
 
         CATransform3D destiTransform = templateLayer.transform;
 
@@ -356,7 +388,8 @@
         theGroup.animations = [NSArray arrayWithObjects:zPositionAnimation, moveDownLayer, nil]; // you can add more
         [imgLayer addAnimation:theGroup forKey:@"zoomAndRotate"];
 
-        imgLayer.bounds = CGRectMake(0,0,width * scale, height * scale);
+        //imgLayer.bounds = CGRectMake(0,0,width * scale, height * scale);
+        imgLayer.bounds = templateLayer.bounds;
         imgLayer.position = newPosition;
         imgLayer.zPosition = destiZPosition;
         imgLayer.anchorPoint = templateLayer.anchorPoint;
@@ -365,15 +398,25 @@
         imgLayer.borderWidth = 0;
 
         //TODOList: this part need to be delay after animation group
-        if (j >= ([coverFlowView getTemplateLayers].count - 2)){
-            NSLog(@"hidden yes for j: %d > count: %d" ,j, [coverFlowView getTemplateLayers].count - 2);
-            imgLayer.hidden = YES;
+        if (isVisible == NO){
+            //NSLog(@"hidden yes for k: %d > count: %d" ,k, [coverFlowView getTemplateLayers].count - 2);
+            //imgLayer.hidden = YES;
+
+            float endOpacity =  0.0;
+            CABasicAnimation *fadeOut = [CABasicAnimation animationWithKeyPath:@"opacity"];
+            [fadeOut setToValue:[NSNumber numberWithFloat:endOpacity]];
+            [fadeOut setDuration:0.5f];
+            [fadeOut setRemovedOnCompletion:NO];
+            [imgLayer addAnimation:fadeOut forKey:@"fadeout"];
+            imgLayer.opacity = endOpacity;
+
         }
     }
 
 
 
-   	[self performSelector:@selector(hideImageLayer) withObject:self afterDelay:1.6];
+
+   	//[self performSelector:@selector(hideImageLayer) withObject:self afterDelay:1.6];
 
 
     [self performSelector:@selector(showRealmages) withObject:self afterDelay:2.6];
@@ -381,8 +424,10 @@
 }
 
 - (void)showRealmages {
-    [coverFlowView setImageSources:selectedImages];
-    [coverFlowView setupImages];
+    [coverFlowView addGestureRecognizer:self.imagesView];
+    //[coverFlowView setImageSources:selectedImages];
+    [coverFlowView setSourceImageLayers:selectedImageLayers];
+    [coverFlowView setupImagesWithSourceLayers];
 }
 
 

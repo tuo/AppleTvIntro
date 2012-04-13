@@ -79,6 +79,6 @@
 - (void)setNormalImageSizeForLayer:(CGSize)size;
 
 @property(nonatomic, strong) NSArray *rawImageLayers;
-
+@property(nonatomic, strong) UIPanGestureRecognizer *gestureRecognizer;
 @end
 

@@ -29,6 +29,8 @@
     CALayer *_rootLayer;
     NSArray *_rawImageLayers;
     CGSize _layerSize;
+
+    UIPanGestureRecognizer *_gestureRecognizer;
 }
 
 
@@ -42,6 +44,7 @@
 @synthesize middleImageScale = _middleImageScale;
 @synthesize rootLayer = _rootLayer;
 @synthesize rawImageLayers = _rawImageLayers;
+@synthesize gestureRecognizer = _gestureRecognizer;
 
 
 + (id)coverFlowViewWithFrame:(CGRect)frame andImages:(NSMutableArray *)rawImages sideImageCount:(int)sideCount sideImageScale:(CGFloat)sideImageScale middleImageScale:(CGFloat)middleImageScale {
@@ -75,8 +78,8 @@
 
    //register the pan gesture to figure out whether user has intention to move to next/previous image
 - (void)addGestureRecognizer:(UIView *)view  {
-    UIPanGestureRecognizer *gestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
-    [view addGestureRecognizer:gestureRecognizer];
+    self.gestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
+    [view addGestureRecognizer:self.gestureRecognizer];
 }
 
 + (id)coverFlowInView:(UIView *)view andImages:(NSMutableArray *)rawImages sideImageCount:(int)sideCount sideImageScale:(CGFloat)sideImageScale middleImageScale:(CGFloat)middleImageScale {
@@ -563,4 +566,5 @@
 - (void)setNormalImageSizeForLayer:(CGSize)size {
     _layerSize = CGSizeMake(size.width, size.height);
 }
+
 @end

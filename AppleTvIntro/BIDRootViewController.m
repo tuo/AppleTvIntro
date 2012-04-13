@@ -420,7 +420,7 @@
 
     [self performSelector:@selector(showRealmages) withObject:self afterDelay:2.6];
 
-    [self performSelector:@selector(flyBack) withObject:self afterDelay:5];
+    [self performSelector:@selector(flyBack) withObject:self afterDelay:9];
 
 }
 
@@ -438,8 +438,8 @@
         CALayer *currentImageLayer = [selectedImageLayers objectAtIndex:k];
         CALayer *currentImageLayerBackup = [selectedImageLayersBackup objectAtIndex:k];
 
-        [CATransaction setAnimationDuration:5];
-        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+        [CATransaction setAnimationDuration:2];
+        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
         currentImageLayer.bounds = currentImageLayerBackup.bounds;
         currentImageLayer.position = currentImageLayerBackup.position;
         currentImageLayer.zPosition = currentImageLayerBackup.zPosition;
@@ -452,6 +452,9 @@
 
         [CATransaction commit];
     }
+
+    [self.imagesView removeGestureRecognizer:coverFlowView.gestureRecognizer];
+
 }
 
 -(void)hideImageLayer{

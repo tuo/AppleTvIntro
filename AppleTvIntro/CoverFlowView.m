@@ -278,34 +278,166 @@
 
     //setup the layer templates
     //let's start from left side
+    const CGFloat sideLayerWidth = _layerSize.width * self.sideVisibleImageScale;
+    const CGFloat sideLayerHeight = _layerSize.height * self.sideVisibleImageScale;
+
     for(int i = 0; i <= self.sideVisibleImageCount; i++){
+
+        CAReplicatorLayer *contanerLayer = [CAReplicatorLayer layer];
+        [contanerLayer setContentsScale:[[UIScreen mainScreen] scale]];
+        contanerLayer.bounds = CGRectMake(0,0, sideLayerWidth, sideLayerHeight * 1.5);
+        contanerLayer.position = CGPointMake(centerX - gapBetweenMiddleAndSide - gapAmongSideImages * (self.sideVisibleImageCount - i), centerY - 300);
+        contanerLayer.anchorPoint = CGPointMake(0.5, 0.33); //1/3
+        contanerLayer.anchorPoint = CGPointMake(0.5, 0); //1/3
+        contanerLayer.instanceCount = 2;
+        CATransform3D transform = CATransform3DIdentity;
+        transform = CATransform3DScale(transform, 1.0, -1.0, 1.0);
+        transform = CATransform3DTranslate(transform, 0, -_layerSize.height * self.sideVisibleImageScale * 2, 1.0);
+            //transform = CATransform3DTranslate(transform, 0, 100, 1.0);
+        contanerLayer.instanceTransform = transform;
+        contanerLayer.transform = CATransform3DMakeRotation(leftRadian, 0, 1, 0);
+        contanerLayer.zPosition = (i - self.sideVisibleImageCount - 1) * 10;
+        contanerLayer.masksToBounds =  YES;
+
        CALayer *layer = [CALayer layer];
-       layer.position = CGPointMake(centerX - gapBetweenMiddleAndSide - gapAmongSideImages * (self.sideVisibleImageCount - i), centerY);
-       layer.zPosition = (i - self.sideVisibleImageCount - 1) * 10;
-       layer.transform = CATransform3DMakeRotation(leftRadian, 0, 1, 0);
-       layer.bounds = CGRectMake(0,0, _layerSize.width * self.sideVisibleImageScale, _layerSize.height * self.sideVisibleImageScale);
+//       layer.position = CGPointMake(centerX - gapBetweenMiddleAndSide - gapAmongSideImages * (self.sideVisibleImageCount - i), centerY);
+//       layer.zPosition = (i - self.sideVisibleImageCount - 1) * 10;
+//       layer.transform = CATransform3DMakeRotation(leftRadian, 0, 1, 0);
+//       layer.bounds = CGRectMake(0,0, _layerSize.width * self.sideVisibleImageScale, _layerSize.height * self.sideVisibleImageScale);
+//       [layer setValue:[NSNumber numberWithFloat:self.sideVisibleImageScale] forKey:@"scale"];
+//
+        [layer setAnchorPoint:CGPointMake(0, 0)];
+         //layer.zPosition = (i - self.sideVisibleImageCount - 1) * 10;
+         //layer.transform = CATransform3DMakeRotation(leftRadian, 0, 1, 0);
+       layer.bounds = CGRectMake(0,0, sideLayerWidth, sideLayerHeight);
        [layer setValue:[NSNumber numberWithFloat:self.sideVisibleImageScale] forKey:@"scale"];
-       [self.templateLayers addObject:layer];
+
+
+        CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+        [gradientLayer setColors:[NSArray arrayWithObjects:(__bridge id)[[UIColor clearColor] colorWithAlphaComponent:0.25].CGColor, [UIColor blackColor].CGColor, nil]];
+          [gradientLayer setBounds:CGRectMake(0, 0, layer.frame.size.width, sideLayerHeight * 0.5)];
+          [gradientLayer setAnchorPoint:CGPointMake(0.5, 0)];
+          [gradientLayer setPosition:CGPointMake(contanerLayer.frame.origin.x + (contanerLayer.frame.size.width)/2 ,
+                  contanerLayer.frame.origin.y + sideLayerHeight + 1.0)];
+          //[gradientLayer setZPosition:(layer.zPosition + 1)];
+        gradientLayer.transform = CATransform3DMakeRotation(leftRadian, 0, 1, 0);
+
+      [contanerLayer addSublayer:layer];
+      [self.rootLayer addSublayer:contanerLayer];
+      [self.rootLayer addSublayer:gradientLayer];
+
+
+        [self.templateLayers addObject:contanerLayer];
     }
 
     //middle
 
-    CALayer *layer = [CALayer layer];
-    layer.position = CGPointMake(centerX, centerY);
-    layer.zPosition = 0;
-    [layer setValue:[NSNumber numberWithFloat:self.middleImageScale] forKey:@"scale"];
-    layer.bounds = CGRectMake(0,0, _layerSize.width * self.middleImageScale, _layerSize.height * self.middleImageScale);
-    [self.templateLayers addObject:layer];
+
+    CAReplicatorLayer *contanerLayer = [CAReplicatorLayer layer];
+    [contanerLayer setContentsScale:[[UIScreen mainScreen] scale]];
+    contanerLayer.bounds = CGRectMake(0,0, _layerSize.width * self.middleImageScale, _layerSize.height * self.middleImageScale * 1.5);
+    contanerLayer.position = CGPointMake(centerX, centerY-300);
+    contanerLayer.anchorPoint = CGPointMake(0.5, 0); //1/3
+    contanerLayer.instanceCount = 2;
+    CATransform3D transform = CATransform3DIdentity;
+    transform = CATransform3DScale(transform, 1.0, -1.0, 1.0);
+    transform = CATransform3DTranslate(transform, 0, -_layerSize.height * self.middleImageScale * 2, 1.0);
+    contanerLayer.instanceTransform = transform;
+    //contanerLayer.transform = CATransform3DMakeRotation(leftRadian, 0, 1, 0);
+    contanerLayer.zPosition = 0;
+    contanerLayer.masksToBounds =  YES;
+
+
+   CALayer *layer = [CALayer layer];
+//       layer.position = CGPointMake(centerX - gapBetweenMiddleAndSide - gapAmongSideImages * (self.sideVisibleImageCount - i), centerY);
+//       layer.zPosition = (i - self.sideVisibleImageCount - 1) * 10;
+//       layer.transform = CATransform3DMakeRotation(leftRadian, 0, 1, 0);
+//       layer.bounds = CGRectMake(0,0, _layerSize.width * self.sideVisibleImageScale, _layerSize.height * self.sideVisibleImageScale);
+//       [layer setValue:[NSNumber numberWithFloat:self.sideVisibleImageScale] forKey:@"scale"];
+//
+   //layer.position = CGPointMake(contanerLayer.bounds.size.width/2,contanerLayer.bounds.size.height/2);
+     //layer.zPosition = (i - self.sideVisibleImageCount - 1) * 10;
+     //layer.transform = CATransform3DMakeRotation(leftRadian, 0, 1, 0);
+   layer.bounds = CGRectMake(0,0, _layerSize.width * self.middleImageScale, _layerSize.height * self.middleImageScale);
+    [layer setAnchorPoint:CGPointMake(0, 0)];
+
+
+
+
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    [gradientLayer setColors:[NSArray arrayWithObjects:(__bridge id)[[UIColor clearColor] colorWithAlphaComponent:0.25].CGColor, [UIColor blackColor].CGColor, nil]];
+
+        [gradientLayer setBounds:CGRectMake(0, 0, layer.frame.size.width, _layerSize.height * self.middleImageScale * 0.5)];
+        [gradientLayer setAnchorPoint:CGPointMake(0.5, 0)];
+        [gradientLayer setPosition:CGPointMake(contanerLayer.frame.origin.x + (contanerLayer.frame.size.width)/2 ,
+                contanerLayer.frame.origin.y + _layerSize.height * self.middleImageScale + 1.0)];
+        //[gradientLayer setZPosition:(layer.zPosition + 1)];
+
+
+    [contanerLayer addSublayer:layer];
+    [self.rootLayer addSublayer:contanerLayer];
+    [self.rootLayer addSublayer:gradientLayer];
+
+
+    [self.templateLayers addObject:contanerLayer];
+
+
     //right
     for(int i = 0; i <= self.sideVisibleImageCount; i++){
-        CALayer *layer = [CALayer layer];
-        layer.position = CGPointMake(centerX + gapBetweenMiddleAndSide + gapAmongSideImages * i, centerY);
-        layer.zPosition = (i + 1) * -10;
-        layer.transform = CATransform3DMakeRotation(rightRadian, 0, 1, 0);
-        [layer setValue:[NSNumber numberWithFloat:self.sideVisibleImageScale] forKey:@"scale"];
-        layer.bounds = CGRectMake(0,0, _layerSize.width * self.sideVisibleImageScale, _layerSize.height * self.sideVisibleImageScale);
-        [self.templateLayers addObject:layer];
+
+
+        CAReplicatorLayer *contanerLayer = [CAReplicatorLayer layer];
+        [contanerLayer setContentsScale:[[UIScreen mainScreen] scale]];
+        contanerLayer.bounds = CGRectMake(0,0, sideLayerWidth, sideLayerHeight * 1.5);
+        contanerLayer.position = CGPointMake(centerX + gapBetweenMiddleAndSide + gapAmongSideImages * i, centerY - 300);
+        contanerLayer.anchorPoint = CGPointMake(0.5, 0); //1/3
+        contanerLayer.instanceCount = 2;
+        CATransform3D transform = CATransform3DIdentity;
+        transform = CATransform3DScale(transform, 1.0, -1.0, 1.0);
+        transform = CATransform3DTranslate(transform, 0, -sideLayerHeight * 2, 1.0);
+            //transform = CATransform3DTranslate(transform, 0, 100, 1.0);
+        contanerLayer.instanceTransform = transform;
+        contanerLayer.transform = CATransform3DMakeRotation(rightRadian, 0, 1, 0);
+        contanerLayer.zPosition = (i + 1) * -10;
+        contanerLayer.masksToBounds = YES;
+
+       CALayer *layer = [CALayer layer];
+//       layer.position = CGPointMake(centerX - gapBetweenMiddleAndSide - gapAmongSideImages * (self.sideVisibleImageCount - i), centerY);
+//       layer.zPosition = (i - self.sideVisibleImageCount - 1) * 10;
+//       layer.transform = CATransform3DMakeRotation(leftRadian, 0, 1, 0);
+//       layer.bounds = CGRectMake(0,0, _layerSize.width * self.sideVisibleImageScale, _layerSize.height * self.sideVisibleImageScale);
+//       [layer setValue:[NSNumber numberWithFloat:self.sideVisibleImageScale] forKey:@"scale"];
+//
+        [layer setAnchorPoint:CGPointMake(0, 0)];
+         //layer.zPosition = (i - self.sideVisibleImageCount - 1) * 10;
+         //layer.transform = CATransform3DMakeRotation(leftRadian, 0, 1, 0);
+       layer.bounds = CGRectMake(0,0, sideLayerWidth, sideLayerHeight);
+       [layer setValue:[NSNumber numberWithFloat:self.sideVisibleImageScale] forKey:@"scale"];
+
+
+        CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+            [gradientLayer setColors:[NSArray arrayWithObjects:(__bridge id)[[UIColor clearColor] colorWithAlphaComponent:0.25].CGColor, [UIColor blackColor].CGColor, nil]];
+
+            [gradientLayer setBounds:CGRectMake(0, 0, layer.frame.size.width, sideLayerHeight * 0.5)];
+            [gradientLayer setAnchorPoint:CGPointMake(0.5, 0)];
+            [gradientLayer setPosition:CGPointMake(contanerLayer.frame.origin.x + (contanerLayer.frame.size.width)/2 ,
+                    contanerLayer.frame.origin.y + sideLayerHeight + 1.0)];
+            //[gradientLayer setZPosition:(layer.zPosition + 1)];
+        gradientLayer.transform = CATransform3DMakeRotation(rightRadian, 0, 1, 0);
+
+        [contanerLayer addSublayer:layer];
+        [self.rootLayer addSublayer:contanerLayer];
+        [self.rootLayer addSublayer:gradientLayer];
+
+
+        [self.templateLayers addObject:contanerLayer];
+
     }
+
+    //for (int i = 1; i < self.templateLayers.count - 1; i ++){
+        //[self.rootLayer addSublayer:[self.templateLayers objectAtIndex:i]];
+
+   // }
 }
 
 - (void)setupImages{

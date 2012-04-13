@@ -52,7 +52,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
 
     [self.imagesView setBackgroundColor:[UIColor whiteColor]];
-    [self.imagesView setBackgroundColor:[UIColor lightGrayColor]];
+    [self.imagesView setBackgroundColor:[UIColor blackColor]];
     self.galleryLayer = [CALayer layer];
     self.coverFlowLayer = [CALayer layer];
 
@@ -385,10 +385,11 @@
         //imgLayer.bounds = CGRectMake(0,0,width * scale, height * scale);
         [CATransaction setAnimationDuration:5];
         [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-        imgLayer.bounds = templateLayer.bounds;
+
+        imgLayer.bounds =((CALayer *)[templateLayer.sublayers objectAtIndex:0]).bounds;
         imgLayer.position = newPosition;
         imgLayer.zPosition = destiZPosition;
-        imgLayer.anchorPoint = templateLayer.anchorPoint;
+        imgLayer.anchorPoint = ((CALayer *)[templateLayer.sublayers objectAtIndex:0]).anchorPoint;
         imgLayer.transform = destiTransform;
         imgLayer.borderColor = [UIColor redColor].CGColor;
         imgLayer.borderWidth = 0;
@@ -409,6 +410,8 @@
 
         }
         [CATransaction commit];
+
+        ((CALayer *)[templateLayer.sublayers objectAtIndex:0]).contents = imgLayer.contents;
 
     }
 

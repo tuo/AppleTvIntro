@@ -30,6 +30,7 @@
     CoverFlowView *coverFlowView;
     NSMutableArray *selectedImages;
     NSMutableArray *selectedImageLayers;
+    NSMutableArray *selectedImageLayersBackup;
 
 }
 @synthesize imagesView;
@@ -282,10 +283,24 @@
 
     selectedImageLayers = [[NSMutableArray alloc] init];
 
+    selectedImageLayersBackup = [[NSMutableArray alloc] init];
+
     //pickAndFillInWithSelectedImages
     for (int j = 0; j < COLS * 2; j++) {
         [selectedImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg", j]]];
-        [selectedImageLayers addObject:[_imageLayers objectAtIndex:j]];
+        CALayer *currentImageLayer = [_imageLayers objectAtIndex:j];
+        [selectedImageLayers addObject:currentImageLayer];
+        CALayer *backup = [CALayer layer];
+        backup.bounds = currentImageLayer.bounds;
+        backup.position = currentImageLayer.position;
+        backup.zPosition = currentImageLayer.zPosition;
+        backup.anchorPoint = currentImageLayer.anchorPoint;
+        backup.transform = currentImageLayer.transform;
+        backup.borderColor = [UIColor redColor].CGColor;
+        backup.borderWidth = 0;
+        backup.mask = currentImageLayer.mask;
+        backup.opacity = currentImageLayer.opacity;
+        [selectedImageLayersBackup addObject:backup];
     }
 
 
@@ -405,6 +420,8 @@
 
     [self performSelector:@selector(showRealmages) withObject:self afterDelay:2.6];
 
+    [self performSelector:@selector(flyBack) withObject:self afterDelay:5];
+
 }
 
 
@@ -415,7 +432,27 @@
     [coverFlowView setSourceImageLayers:selectedImageLayers];
     [coverFlowView setupImagesWithSourceLayers];
 }
+-(void)flyBack{
+    NSLog(@"flyBack================================================================");
+    for (int k = 0; k < selectedImageLayers.count; k++) {
+        CALayer *currentImageLayer = [selectedImageLayers objectAtIndex:k];
+        CALayer *currentImageLayerBackup = [selectedImageLayersBackup objectAtIndex:k];
 
+        [CATransaction setAnimationDuration:5];
+        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+        currentImageLayer.bounds = currentImageLayerBackup.bounds;
+        currentImageLayer.position = currentImageLayerBackup.position;
+        currentImageLayer.zPosition = currentImageLayerBackup.zPosition;
+        currentImageLayer.anchorPoint = currentImageLayerBackup.anchorPoint;
+        currentImageLayer.transform = currentImageLayerBackup.transform;
+        currentImageLayer.borderColor = [UIColor redColor].CGColor;
+        currentImageLayer.borderWidth = 0;
+        currentImageLayer.mask = currentImageLayerBackup.mask;
+        currentImageLayer.opacity = currentImageLayerBackup.opacity;
+
+        [CATransaction commit];
+    }
+}
 
 -(void)hideImageLayer{
     for (int j = 0; j < COLS * 2; j++) {

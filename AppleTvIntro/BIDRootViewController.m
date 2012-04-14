@@ -681,6 +681,7 @@
 
         for(CALayer *layer in _imageLayers){
             CATransform3D transform3D = CATransform3DTranslate(layer.transform, 0, -200, 0);
+            transform3D = CATransform3DRotate(transform3D, -0.4, 1, 0, 0);
             layer.transform = transform3D;
         }
         [CATransaction commit];
@@ -700,6 +701,7 @@
 
         for(CALayer *layer in _imageLayers){
             CATransform3D transform3D = CATransform3DTranslate(layer.transform, 0, 200, 0);
+            transform3D = CATransform3DRotate(transform3D, 0.4, 1, 0, 0);
             layer.transform = transform3D;
         }
         [CATransaction commit];

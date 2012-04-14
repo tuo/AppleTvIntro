@@ -18,6 +18,9 @@
 
 @interface BIDRootViewController ()
 - (void)renderGrid;
+
+- (void)hideImageAndShowSlide:(NSArray *)args;
+
 @property (strong, nonatomic) CALayer *galleryLayer;
 @property (strong, nonatomic) CALayer *coverFlowLayer;
 @end
@@ -52,7 +55,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
 
     [self.imagesView setBackgroundColor:[UIColor whiteColor]];
-    [self.imagesView setBackgroundColor:[UIColor blackColor]];
+ [self.imagesView setBackgroundColor:[UIColor blackColor]];
     self.galleryLayer = [CALayer layer];
     self.coverFlowLayer = [CALayer layer];
 
@@ -249,11 +252,16 @@
 
 
 
-        [self performSelector:@selector(flyToCoverFlow) withObject:self afterDelay:1];
+
     }
 
 
 - (void)flyToCoverFlow{
+
+
+
+
+
     NSMutableArray *sourceImages = [NSMutableArray array];
     float width,height;
     for (int i = 0; i < COLS; i++) {
@@ -303,7 +311,7 @@
         [selectedImageLayersBackup addObject:backup];
     }
 
-
+    coverFlowView.currentRenderingImageIndex = selectedImageLayers.count/2;
     for (int k = 0; k < selectedImageLayers.count; k++) {
         CALayer *imgLayer = [selectedImageLayers objectAtIndex:k];
 
@@ -340,7 +348,7 @@
         float scale = [[templateLayer valueForKey:@"scale"] floatValue];
       //  NSLog(@"scale: %f", scale);
         //CGPoint newPosition = CGPointMake(templateLayer.position.x -(width/2) + width * (1 - scale)/2,templateLayer.position.y - 150 + height * (1 - scale)/2);
-        CGPoint newPosition = templateLayer.position;
+        CGPoint newPosition = CGPointMake(templateLayer.position.x, templateLayer.position.y + ((CALayer *)[templateLayer.sublayers objectAtIndex:0]).bounds.size.height/2);
         //NSLog(@"new template position: %@", [NSValue valueWithCGPoint:newPosition] );
 
         CATransform3D destiTransform = templateLayer.transform;
@@ -389,13 +397,19 @@
         imgLayer.bounds =((CALayer *)[templateLayer.sublayers objectAtIndex:0]).bounds;
         imgLayer.position = newPosition;
         imgLayer.zPosition = destiZPosition;
-        imgLayer.anchorPoint = ((CALayer *)[templateLayer.sublayers objectAtIndex:0]).anchorPoint;
+        imgLayer.anchorPoint = CGPointMake(0.5, 0.5);
         imgLayer.transform = destiTransform;
         imgLayer.borderColor = [UIColor redColor].CGColor;
         imgLayer.borderWidth = 0;
         imgLayer.mask = nil;
 
+        NSArray *args = [[NSArray alloc] initWithObjects:imgLayer, [NSNumber numberWithBool:isVisible], templateLayer,nil];
+        [self performSelector:@selector(hideImageAndShowSlide:) withObject:args afterDelay:5];
+       // imgLayer.bounds =CGRectZero;
+
+
         //TODOList: this part need to be delay after animation group
+        //((CALayer *)[templateLayer.sublayers objectAtIndex:0]).contents = imgLayer.contents;
         if (isVisible == NO){
             //NSLog(@"hidden yes for k: %d > count: %d" ,k, [coverFlowView getTemplateLayers].count - 2);
             //imgLayer.hidden = YES;
@@ -408,10 +422,11 @@
             [imgLayer addAnimation:fadeOut forKey:@"fadeout"];
             imgLayer.opacity = endOpacity;
 
+           // ((CALayer *)[templateLayer.sublayers objectAtIndex:0]).contents = nil;
         }
+
         [CATransaction commit];
 
-        ((CALayer *)[templateLayer.sublayers objectAtIndex:0]).contents = imgLayer.contents;
 
     }
 
@@ -423,26 +438,100 @@
 
     [self performSelector:@selector(showRealmages) withObject:self afterDelay:2.6];
 
-    [self performSelector:@selector(flyBack) withObject:self afterDelay:9];
+
 
 }
+- (void)hideImageAndShowSlide:(NSArray *)args{
+    CALayer *imgLayer = [args objectAtIndex:0];
+    BOOL isVisible = [[args objectAtIndex:1] boolValue];
+    CALayer *templateLayer = [args objectAtIndex:2];
 
+    [CATransaction setDisableActions:YES];
+    imgLayer.bounds =CGRectZero;
+    [CATransaction setDisableActions:NO];
+
+    [CATransaction setAnimationDuration:0.5];
+    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
+
+    if (isVisible)
+        ((CALayer *)[templateLayer.sublayers objectAtIndex:0]).contents = imgLayer.contents;
+    else
+        ((CALayer *)[templateLayer.sublayers objectAtIndex:0]).contents = nil;
+
+    [CATransaction commit];
+}
 
 
 - (void)showRealmages {
     [coverFlowView addGestureRecognizer:self.imagesView];
     //[coverFlowView setImageSources:selectedImages];
+    NSLog(@"");
     [coverFlowView setSourceImageLayers:selectedImageLayers];
     [coverFlowView setupImagesWithSourceLayers];
 }
 -(void)flyBack{
     NSLog(@"flyBack================================================================");
+
+//    for (int k = 0; k < selectedImageLayers.count; k++) {
+//
+//    [CATransaction setDisableActions:YES];
+//     currentImageLayer.bounds =;
+//    [CATransaction setDisableActions:NO];
+//
+//    [CATransaction setAnimationDuration:0.5];
+//    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
+//
+//    if (isVisible)
+//        ((CALayer *)[templateLayer.sublayers objectAtIndex:0]).contents = imgLayer.contents;
+//    else
+//        ((CALayer *)[templateLayer.sublayers objectAtIndex:0]).contents = nil;
+//
+//    [CATransaction commit];
+//
+//    }
+    [CATransaction setDisableActions:YES];
+    for (int i = 0; i < coverFlowView.getTemplateLayers.count; i++) {
+            int indexInImage =  (coverFlowView.currentRenderingImageIndex - coverFlowView.sideVisibleImageCount ) + i - 1;
+            CALayer *template = [coverFlowView.getTemplateLayers objectAtIndex:i];
+            if (indexInImage  <= selectedImageLayers.count - 1 && indexInImage   >= 0 && i !=0 && i != coverFlowView.templateLayers.count -1)   {
+                CALayer *currentImageLayer = [selectedImageLayers objectAtIndex:indexInImage];
+                currentImageLayer.bounds = ((CALayer *)[template.sublayers objectAtIndex:0]).bounds;
+                currentImageLayer.opacity = 1.0;
+            }
+
+
+
+    }
+    [CATransaction setDisableActions:NO];
+
+    for (int i = 0; i < coverFlowView.getTemplateLayers.count; i++) {
+            CALayer *template = [coverFlowView.getTemplateLayers objectAtIndex:i];
+
+                     CABasicAnimation *fadeOut = [CABasicAnimation animationWithKeyPath:@"opacity"];
+                    [fadeOut setToValue:[NSNumber numberWithFloat:0.0]];
+                    [fadeOut setDuration:0.5f];
+                     [fadeOut setRemovedOnCompletion:NO];
+                       [fadeOut setFillMode:kCAFillModeForwards];
+                      [(CALayer *)[template.sublayers objectAtIndex:0] addAnimation:fadeOut forKey:@"fadeout"];
+
+    }
+
+//    [self.imagesView removeGestureRecognizer:coverFlowView.gestureRecognizer];
+    [self performSelector:@selector(hideImageLayer) withObject:self afterDelay:1.6];
+}
+
+
+
+-(void)hideImageLayer{
+
+
+    [CATransaction setAnimationDuration:5];
+    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+
     for (int k = 0; k < selectedImageLayers.count; k++) {
         CALayer *currentImageLayer = [selectedImageLayers objectAtIndex:k];
-        CALayer *currentImageLayerBackup = [selectedImageLayersBackup objectAtIndex:k];
+            CALayer *currentImageLayerBackup = [selectedImageLayersBackup objectAtIndex:k];
 
-        [CATransaction setAnimationDuration:2];
-        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
         currentImageLayer.bounds = currentImageLayerBackup.bounds;
         currentImageLayer.position = currentImageLayerBackup.position;
         currentImageLayer.zPosition = currentImageLayerBackup.zPosition;
@@ -453,20 +542,43 @@
         currentImageLayer.mask = currentImageLayerBackup.mask;
         currentImageLayer.opacity = currentImageLayerBackup.opacity;
 
-        [CATransaction commit];
+
     }
 
-    [self.imagesView removeGestureRecognizer:coverFlowView.gestureRecognizer];
+    [CATransaction commit];
 
+    [self performSelector:@selector(moveDown) withObject:self afterDelay:5];
 }
 
--(void)hideImageLayer{
-    for (int j = 0; j < COLS * 2; j++) {
-                CALayer *imgLayer = [_imageLayers objectAtIndex:j];
-                imgLayer.bounds = CGRectZero;
-        }
+- (void)moveUpCameraAngle
+{
 
+    [CATransaction setDisableActions:NO];
+	[CATransaction setAnimationDuration:1];
+    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+
+
+	CATransform3D t = CATransform3DIdentity;
+	t.m34 = 1.0/-500; //Newmans
+
+//	t = CATransform3DRotate(t, 0.09, 0, 0, 1); //Z
+	//t = CATransform3DRotate(t, .62, 0, 1, 0);	//Y
+//	t = CATransform3DRotate(t, 1.44, -1, 0, 0); //X
+//
+	//t = CATransform3DScale(t, 0.35, 0.35, 1.0);
+	t = CATransform3DTranslate(t, 0, -220, 0);
+
+	self.imagesView.layer.sublayerTransform = t;
+
+//	replicatorEast.transform = CATransform3DMakeTranslation(-440, -440, 0);
+//	replicatorWest.transform = CATransform3DMakeTranslation(440, 440, -55);
+//
+//	[self performSelector:@selector(animateTopOut) withObject:self afterDelay:2.6];
+//	[self performSelector:@selector(animateBottomOut) withObject:self afterDelay:2.6];
+
+    [CATransaction commit];
 }
+
 - (void)rotateCameraAngle
 {
 
@@ -561,4 +673,35 @@
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
+
+- (IBAction)flyInPressed:(id)sender {
+    [CATransaction setDisableActions:NO];
+    	[CATransaction setAnimationDuration:2];
+        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+
+        for(CALayer *layer in _imageLayers){
+            CATransform3D transform3D = CATransform3DTranslate(layer.transform, 0, -200, 0);
+            layer.transform = transform3D;
+        }
+        [CATransaction commit];
+
+    [self performSelector:@selector(flyToCoverFlow) withObject:self afterDelay:2];
+}
+
+- (IBAction)flyOutPressed:(id)sender {
+    [self performSelector:@selector(flyBack) withObject:self afterDelay:1];
+
+}
+
+-(void)moveDown{
+    [CATransaction setDisableActions:NO];
+    	[CATransaction setAnimationDuration:2];
+        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+
+        for(CALayer *layer in _imageLayers){
+            CATransform3D transform3D = CATransform3DTranslate(layer.transform, 0, 200, 0);
+            layer.transform = transform3D;
+        }
+        [CATransaction commit];
+}
 @end

@@ -233,7 +233,7 @@
 }
 
 - (void)handleGesture:(UIPanGestureRecognizer *)recognizer {
-    NSLog(@"-----------handle gesture");
+
    if (recognizer.state == UIGestureRecognizerStateChanged){
        //get offset
        CGPoint offset = [recognizer translationInView:recognizer.view];
@@ -286,7 +286,7 @@
         CAReplicatorLayer *contanerLayer = [CAReplicatorLayer layer];
         [contanerLayer setContentsScale:[[UIScreen mainScreen] scale]];
         contanerLayer.bounds = CGRectMake(0,0, sideLayerWidth, sideLayerHeight * 1.5);
-        contanerLayer.position = CGPointMake(centerX - gapBetweenMiddleAndSide - gapAmongSideImages * (self.sideVisibleImageCount - i), centerY - 300);
+        contanerLayer.position = CGPointMake(centerX - gapBetweenMiddleAndSide - gapAmongSideImages * (self.sideVisibleImageCount - i), centerY - 100);
         contanerLayer.anchorPoint = CGPointMake(0.5, 0.33); //1/3
         contanerLayer.anchorPoint = CGPointMake(0.5, 0); //1/3
         contanerLayer.instanceCount = 2;
@@ -336,7 +336,7 @@
     CAReplicatorLayer *contanerLayer = [CAReplicatorLayer layer];
     [contanerLayer setContentsScale:[[UIScreen mainScreen] scale]];
     contanerLayer.bounds = CGRectMake(0,0, _layerSize.width * self.middleImageScale, _layerSize.height * self.middleImageScale * 1.5);
-    contanerLayer.position = CGPointMake(centerX, centerY-300);
+    contanerLayer.position = CGPointMake(centerX, centerY-100);
     contanerLayer.anchorPoint = CGPointMake(0.5, 0); //1/3
     contanerLayer.instanceCount = 2;
     CATransform3D transform = CATransform3DIdentity;
@@ -346,6 +346,7 @@
     //contanerLayer.transform = CATransform3DMakeRotation(leftRadian, 0, 1, 0);
     contanerLayer.zPosition = 0;
     contanerLayer.masksToBounds =  YES;
+
 
 
    CALayer *layer = [CALayer layer];
@@ -389,7 +390,7 @@
         CAReplicatorLayer *contanerLayer = [CAReplicatorLayer layer];
         [contanerLayer setContentsScale:[[UIScreen mainScreen] scale]];
         contanerLayer.bounds = CGRectMake(0,0, sideLayerWidth, sideLayerHeight * 1.5);
-        contanerLayer.position = CGPointMake(centerX + gapBetweenMiddleAndSide + gapAmongSideImages * i, centerY - 300);
+        contanerLayer.position = CGPointMake(centerX + gapBetweenMiddleAndSide + gapAmongSideImages * i, centerY - 100);
         contanerLayer.anchorPoint = CGPointMake(0.5, 0); //1/3
         contanerLayer.instanceCount = 2;
         CATransform3D transform = CATransform3DIdentity;
@@ -536,7 +537,7 @@
     self.currentRenderingImageIndex = self.rawImageLayers.count/2;
     int startingImageIndex = (self.currentRenderingImageIndex - self.sideVisibleImageCount <= 0) ? 0 : self.currentRenderingImageIndex - self.sideVisibleImageCount;
     int endImageIndex = (self.currentRenderingImageIndex + self.sideVisibleImageCount < self.images.count )  ? (self.currentRenderingImageIndex + self.sideVisibleImageCount) : (self.images.count -1 );
-
+    NSLog(@"start current image index: %d, and count: %d , ", self.currentRenderingImageIndex, self.rawImageLayers.count);
     //step2: set up images that ready for rendering
 //    for (int i = startingImageIndex; i <= endImageIndex; i++) {
 //       UIImage *image = [self.images objectAtIndex:i];
@@ -564,71 +565,129 @@
 
 
 - (void)newMoveOneStep:(BOOL)isSwipingToLeftDirection {
-    NSLog(@"current image index: %d", self.currentRenderingImageIndex);
+    NSLog(@"current image index: %d, and count: %d , and swipe to left: %d", self.currentRenderingImageIndex, self.rawImageLayers.count, isSwipingToLeftDirection);
     //when move the first/last image,disable moving
     if ((self.currentRenderingImageIndex == 0 && !isSwipingToLeftDirection) || (self.currentRenderingImageIndex == self.rawImageLayers.count -1 && isSwipingToLeftDirection))
         return;
 
-    int offset = isSwipingToLeftDirection ?  -1 : 1;
+    int offset = isSwipingToLeftDirection ?  1 : -1;
+    NSLog(@"allowed");
+    NSMutableArray *visibleTemplateLayers = [[NSMutableArray alloc] init];
+    for (int k = 0; k <self.templateLayers.count; k++) {
 
-    for (int i = self.currentRenderingImageIndex - self.sideVisibleImageCount - 1; i <= self.currentRenderingImageIndex + self.sideVisibleImageCount + 1; i++) {
+        int indexInImage =  (self.currentRenderingImageIndex - self.sideVisibleImageCount ) -1 + k;
+        if (indexInImage == self.currentRenderingImageIndex){
 
-        if (i > self.rawImageLayers.count - 1 || i < 0)
-            continue;
+        }
+        CALayer *templateLayer = [self.templateLayers objectAtIndex:k];
 
-        int indexInTemplate = i - (self.currentRenderingImageIndex - self.sideVisibleImageCount - 1);
-        CALayer *originLayer = [self.rawImageLayers objectAtIndex:i];
-        CALayer *targetTemplate;
-        BOOL isVisible = NO;
-        NSLog(@"i : %d , indexTempalte: %d, offset: %d, template count: %d", i, indexInTemplate, offset, self.templateLayers.count);
-        if (indexInTemplate + offset <= 0)
-            targetTemplate = [self.templateLayers objectAtIndex: 0];
-        else if (indexInTemplate + offset >= self.templateLayers.count - 1)
-            targetTemplate = [self.templateLayers lastObject];
-        else{
-            NSLog(@"index + offset: %d", indexInTemplate + offset);
-            targetTemplate = [self.templateLayers objectAtIndex: indexInTemplate + offset];
-            isVisible = YES;
+        if (indexInImage + offset > self.rawImageLayers.count - 1 || indexInImage + offset < 0)   {
+
+//            ((CALayer *)[templateLayer.sublayers objectAtIndex:0]).opacity = 0.0;
+//                        ((CALayer *)[templateLayer.sublayers objectAtIndex:0]).contents = nil;
+            CABasicAnimation *fadeOut = [CABasicAnimation animationWithKeyPath:@"opacity"];
+            [fadeOut setToValue:[NSNumber numberWithFloat:0.0]];
+            [fadeOut setDuration:0.5f];
+             [fadeOut setRemovedOnCompletion:NO];
+              [(CALayer *)[templateLayer.sublayers objectAtIndex:0] addAnimation:fadeOut forKey:@"fadeout"];
+            ((CALayer *)[templateLayer.sublayers objectAtIndex:0]).contents = nil;
+
+        }else{
+            CALayer *newLayer = [self.rawImageLayers objectAtIndex:indexInImage + offset];
+
+            CABasicAnimation *fadeOut = [CABasicAnimation animationWithKeyPath:@"opacity"];
+            [fadeOut setToValue:[NSNumber numberWithFloat:1.0]];
+            [fadeOut setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
+            [fadeOut setDuration:0.5f];
+             [fadeOut setRemovedOnCompletion:NO];
+              [(CALayer *)[templateLayer.sublayers objectAtIndex:0] addAnimation:fadeOut forKey:@"fadeout"];
+
+
+            CGPoint newPosition = CGPointMake(templateLayer.position.x, templateLayer.position.y + ((CALayer *)[templateLayer.sublayers objectAtIndex:0]).bounds.size.height/2);
+
+            newLayer.position = newPosition;
+            newLayer.zPosition = templateLayer.zPosition;
+            newLayer.transform = templateLayer.transform;
+            newLayer.bounds = ((CALayer *)[templateLayer.sublayers objectAtIndex:0]).bounds;
+            newLayer.bounds =CGRectZero;
+
+
+            //((CALayer *)[templateLayer.sublayers objectAtIndex:0]).opacity = 1.0;
+            if (k == 0 || k == self.templateLayers.count -1 )
+                ((CALayer *)[templateLayer.sublayers objectAtIndex:0]).contents = nil;
+            else
+                ((CALayer *)[templateLayer.sublayers objectAtIndex:0]).contents = newLayer.contents;
+
         }
 
-        float endOpacity = isVisible ? 1.0 : 0.0;
-        [CATransaction setAnimationDuration:1];
-        originLayer.position = targetTemplate.position;
-        originLayer.zPosition = targetTemplate.zPosition;
-        originLayer.transform = targetTemplate.transform;
-        originLayer.bounds = targetTemplate.bounds;
-        originLayer.opacity = endOpacity;
-        [CATransaction commit];
-
-
-//        CABasicAnimation *fadeOut = [CABasicAnimation animationWithKeyPath:@"opacity"];
-//        [fadeOut setToValue:[NSNumber numberWithFloat:endOpacity]];
-//        [fadeOut setDuration:0.5f];
-//        [fadeOut setRemovedOnCompletion:NO];
-//        [originLayer addAnimation:fadeOut forKey:@"fadeout"];
-
-
-
-        //set originlayer's bounds
-
-//        CGFloat scale = 1.0f;
-//        if (i + indexInTemplate == self.currentRenderingImageIndex) {
-//            scale = self.middleImageScale  / self.sideVisibleImageScale;
-//        }else if (i == self.currentRenderingImageIndex){
-//            scale = self.sideVisibleImageScale / self.middleImageScale;
-//        }
-//        else if (((i + indexOffsetFromImageLayersToTemplates - 1 == self.sideVisibleImageCount - 1) && isSwipingToLeftDirection) ||
-//                ((i + indexOffsetFromImageLayersToTemplates - 1 == self.sideVisibleImageCount + 1) && !isSwipingToLeftDirection)) {
-//            scale = self.sideVisibleImageScale / self.middleImageScale;
-//        }
-
-        //originLayer.bounds = CGRectMake(0, 0, originLayer.bounds.size.width * scale, originLayer.bounds.size.height * scale);
-        //[self adjustReflectionBounds:originLayer scale:scale];
-
     }
+//    for (int i = self.currentRenderingImageIndex - self.sideVisibleImageCount - 1; i <= self.currentRenderingImageIndex + self.sideVisibleImageCount + 1; i++) {
+//
+//        if (i > self.rawImageLayers.count - 1 || i < 0)   {
+//            continue;
+//        }
+//
+//
+//        int indexInTemplate = i - (self.currentRenderingImageIndex - self.sideVisibleImageCount - 1);
+//        CALayer *originLayer = [self.rawImageLayers objectAtIndex:i];
+//        CALayer *targetTemplate;
+//        BOOL isVisible = NO;
+//        NSLog(@"i : %d , indexTempalte: %d, offset: %d, template count: %d", i, indexInTemplate, offset, self.templateLayers.count);
+//        if (indexInTemplate + offset <= 0)
+//            targetTemplate = [self.templateLayers objectAtIndex: 0];
+//        else if (indexInTemplate + offset >= self.templateLayers.count - 1)
+//            targetTemplate = [self.templateLayers lastObject];
+//        else{
+//            NSLog(@"index + offset: %d", indexInTemplate + offset);
+//            targetTemplate = [self.templateLayers objectAtIndex: indexInTemplate + offset];
+//            isVisible = YES;
+//        }
+//
+//        float endOpacity = isVisible ? 1.0 : 0.0;
+//
+//        CGPoint newPosition = CGPointMake(targetTemplate.position.x, targetTemplate.position.y + ((CALayer *)[targetTemplate.sublayers objectAtIndex:0]).bounds.size.height/2);
+//        [CATransaction setAnimationDuration:1];
+//        originLayer.position = newPosition;
+//        originLayer.zPosition = targetTemplate.zPosition;
+//        originLayer.transform = targetTemplate.transform;
+//        originLayer.bounds = ((CALayer *)[targetTemplate.sublayers objectAtIndex:0]).bounds;
+//        originLayer.opacity = endOpacity;
+//        originLayer.bounds =CGRectZero;
+//        ((CALayer *)[targetTemplate.sublayers objectAtIndex:0]).contents = originLayer.contents;
+//        ((CALayer *)[targetTemplate.sublayers objectAtIndex:0]).opacity = endOpacity;
+//        [CATransaction commit];
+//
+//        [visibleTemplateLayers addObject:targetTemplate];
+//
+////        CABasicAnimation *fadeOut = [CABasicAnimation animationWithKeyPath:@"opacity"];
+////        [fadeOut setToValue:[NSNumber numberWithFloat:endOpacity]];
+////        [fadeOut setDuration:0.5f];
+////        [fadeOut setRemovedOnCompletion:NO];
+////        [originLayer addAnimation:fadeOut forKey:@"fadeout"];
+//
+//
+//
+//        //set originlayer's bounds
+//
+////        CGFloat scale = 1.0f;
+////        if (i + indexInTemplate == self.currentRenderingImageIndex) {
+////            scale = self.middleImageScale  / self.sideVisibleImageScale;
+////        }else if (i == self.currentRenderingImageIndex){
+////            scale = self.sideVisibleImageScale / self.middleImageScale;
+////        }
+////        else if (((i + indexOffsetFromImageLayersToTemplates - 1 == self.sideVisibleImageCount - 1) && isSwipingToLeftDirection) ||
+////                ((i + indexOffsetFromImageLayersToTemplates - 1 == self.sideVisibleImageCount + 1) && !isSwipingToLeftDirection)) {
+////            scale = self.sideVisibleImageScale / self.middleImageScale;
+////        }
+//
+//        //originLayer.bounds = CGRectMake(0, 0, originLayer.bounds.size.width * scale, originLayer.bounds.size.height * scale);
+//        //[self adjustReflectionBounds:originLayer scale:scale];
+//
+//    }
+
 
     self.currentRenderingImageIndex = isSwipingToLeftDirection ? self.currentRenderingImageIndex + 1 : self.currentRenderingImageIndex - 1;
-
+    NSLog(@"after current image index: %d", self.currentRenderingImageIndex);
 //    if (isSwipingToLeftDirection){
 //        //when current rendering index  >= sidecout
 //        if(self.currentRenderingImageIndex >= self.sideVisibleImageCount){

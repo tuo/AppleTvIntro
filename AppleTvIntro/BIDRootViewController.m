@@ -49,6 +49,8 @@
 
 #pragma mark - View lifecycle
 
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -67,13 +69,68 @@
 
     CATransform3D perspective = CATransform3DIdentity;
     perspective.m34 = 1.0 / -550;
-    //perspective = CATransform3DRotate(perspective, .62, 0, 1, 0);	//
+    perspective = CATransform3DRotate(perspective, .62, 0, 1, 0);	//
     self.imagesView.layer.sublayerTransform = perspective;
 
     [self renderGrid];
-    
-}
 
+
+    [self performSelector:@selector(adjustCameraAngle)  withObject:nil afterDelay:2];
+}
+- (void)adjustCameraAngle {
+    CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"sublayerTransform"];
+    animation.duration = 4;
+    animation.removedOnCompletion = NO;
+    animation.fillMode = kCAFillModeForwards;
+
+    CATransform3D newPerspective = self.imagesView.layer.sublayerTransform;
+
+    animation.values = [NSArray arrayWithObjects:
+                    [NSValue valueWithCATransform3D:CATransform3DRotate(newPerspective, 0.0, 0, 1, 0)],
+                    [NSValue valueWithCATransform3D:CATransform3DRotate(newPerspective, -0.62, 0, 1, 0)],
+                    [NSValue valueWithCATransform3D:CATransform3DRotate(newPerspective, -1.24, 0, 1, 0)],
+                    [NSValue valueWithCATransform3D:CATransform3DRotate(newPerspective, -0.62, 0, 1, 0)],
+                    nil];
+
+    animation.keyTimes = [NSArray arrayWithObjects:
+            [NSNumber numberWithFloat:0.00],
+                    [NSNumber numberWithFloat:.3],
+                    [NSNumber numberWithFloat:.6],
+                    [NSNumber numberWithFloat:1],
+            nil];
+    animation.timingFunctions      = [NSArray arrayWithObjects:
+                                             [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear],
+                                             [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn],
+                                             [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut],
+                                             [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn],
+                                               nil];
+
+
+    [self.imagesView.layer addAnimation:animation forKey:@"adjustCameraAngle"];
+
+
+    for (int i = 0; i < _imageLayers.count; i++) {
+       CALayer *layer = [_imageLayers objectAtIndex:i];
+        CABasicAnimation *animation1 = [CABasicAnimation animationWithKeyPath:@"zPosition"];
+                    animation1.toValue = [NSNumber numberWithInt: 0];
+                    //animation.toValue = [NSValue valueWithCGPoint:CGPointMake(layer.position.x - 400, layer.position.y -100)];
+                    animation1.fillMode = kCAFillModeForwards;
+                    animation1.duration = abs(_imageLayers.count/2 - i);
+                    animation1.duration = arc4random() % (_imageLayers.count/4);
+                    animation1.repeatCount = 0;
+                    animation1.autoreverses = YES;
+                    animation1.autoreverses = YES;
+                    animation1.removedOnCompletion = NO;
+                    animation1.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+                    [layer addAnimation:animation1 forKey:@"test"];
+    }
+
+
+
+
+
+
+}
 
 - (void) renderGrid
     {
